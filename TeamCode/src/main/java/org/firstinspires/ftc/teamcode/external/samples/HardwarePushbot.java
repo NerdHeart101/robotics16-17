@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.external.samples;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -56,8 +56,10 @@ public class HardwarePushbot
         rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        leftMotor.setPower(1.0);
+        leftMotor.setMaxSpeed(2);
+        rightMotor.setPower(1.0);
+        rightMotor.setMaxSpeed(2);
         armMotor.setPower(0);
 
         // Set all motors to run without encoders.
