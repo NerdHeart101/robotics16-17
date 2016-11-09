@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 import com.qualcomm.robotcore.eventloop.opmode.AnnotatedOpModeRegistrar;
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptNullOp;
+import org.firstinspires.ftc.robotcontroller.external.samples.PushbotAutoDriveByEncoder_Linear;
 import org.firstinspires.ftc.teamcode.external.samples.PushbotTeleopTank_Iterative;
 
 /**
@@ -80,5 +81,6 @@ public class FtcOpModeRegister implements OpModeRegister {
          */
 
         manager.register("PushbotTeleopTank_Iterative", PushbotTeleopTank_Iterative.class);
+        manager.register("PushbotAutoDriveByEncoder_Linear", PushbotAutoDriveByEncoder_Linear.class);
     }
 }
