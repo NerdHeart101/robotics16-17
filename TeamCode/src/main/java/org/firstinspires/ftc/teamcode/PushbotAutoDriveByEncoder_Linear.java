@@ -75,13 +75,22 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
     org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 6.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_MOTOR_REV    = 1440   ;   // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.5   ;     // This is < 1.0 if geared UP
+    // Competition bot
+
+    static final double WHEEL_DIAMETER_INCHES   = 6.0   ;     // For figuring circumference
+    static final double DISTANCE_BETWEEN_WHEELS = 13.5  ;    // For figuring bot rotations
+
+    // Pushbot
+    /*
+    static final double WHEEL_DIAMETER_INCHES   = 4.0   ;   // For figuring circumference
+    static final double DISTANCE_BETWEEN_WHEELS = 14.625;   // For figuring bot rotations
+    */
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.30;
-    static final double     TURN_SPEED              = 0.5;
+                                                      (WHEEL_DIAMETER_INCHES * Math.PI);
+    static final double     DRIVE_SPEED             = 0.7 ;
+    static final double     TURN_SPEED              = 0.5  ;
 
     @Override
     public void runOpMode() {
@@ -114,8 +123,10 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  -24, -24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        // encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED,  68, 68, 5.0);
+        encoderDrive(TURN_SPEED,  -24, 14, 4.0);
+
+
 
 
         telemetry.addData("Path", "Complete");
@@ -123,7 +134,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
     }
 
     /*
-     *  Method to perfmorm a relative move, based on encoder counts.
+     *  Method to perform a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
      *  Move will stop if any of three conditions occur:
      *  1) Move gets to the desired position
@@ -140,8 +151,8 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.leftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = robot.rightMotor.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newLeftTarget = robot.leftMotor.getCurrentPosition() + (int) (leftInches * -COUNTS_PER_INCH);
+            newRightTarget = robot.rightMotor.getCurrentPosition() + (int) (rightInches * -COUNTS_PER_INCH);
             robot.leftMotor.setTargetPosition(newLeftTarget);
             robot.rightMotor.setTargetPosition(newRightTarget);
 
@@ -156,14 +167,14 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
-                   (runtime.seconds() < timeoutS) &&
-                   (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+                    (runtime.seconds() < timeoutS) &&
+                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                                            robot.leftMotor.getCurrentPosition(),
-                                            robot.rightMotor.getCurrentPosition());
+                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d",
+                        robot.leftMotor.getCurrentPosition(),
+                        robot.rightMotor.getCurrentPosition());
                 telemetry.update();
             }
 
@@ -178,4 +189,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
             //  sleep(250);   // optional pause after each move
         }
     }
+
+
+
 }
