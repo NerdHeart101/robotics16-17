@@ -78,15 +78,15 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
     static final double     COUNTS_PER_MOTOR_REV    = 1440   ;   // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.5   ;     // This is < 1.0 if geared UP
     // Competition bot
-
+    /*
     static final double WHEEL_DIAMETER_INCHES   = 6.0   ;     // For figuring circumference
     static final double DISTANCE_BETWEEN_WHEELS = 13.5  ;    // For figuring bot rotations
-
+    */
     // Pushbot
-    /*
+
     static final double WHEEL_DIAMETER_INCHES   = 4.0   ;   // For figuring circumference
     static final double DISTANCE_BETWEEN_WHEELS = 14.625;   // For figuring bot rotations
-    */
+
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * Math.PI);
     static final double     DRIVE_SPEED             = 0.7 ;
@@ -123,8 +123,11 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  68, 68, 5.0);
-        rotateBot(45);
+        encoderDrive(DRIVE_SPEED, -24, -24, 3.0);
+        rotateLeft(45);
+        encoderDrive(DRIVE_SPEED, -34, -34, 4.0);
+        rotateRight(90);
+        encoderDrive(DRIVE_SPEED,  64,  64, 5.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -187,11 +190,18 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         }
     }
 
-    public void rotateBot(int degrees) {
-        // Degrees will be positive if turning to the left, and negative if turning to the right
+    public void rotateRight(double degrees) {
         double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-        double rightArc = arc/2;
-        double leftArc = -arc/2;
+        double rightArc = arc;
+        double leftArc = -arc;
+        double rotateTimeout = TURN_SPEED*arc*2;
+        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
+    }
+
+    public void rotateLeft(double degrees) {
+        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
+        double rightArc = -arc;
+        double leftArc = arc;
         double rotateTimeout = TURN_SPEED*arc*2;
         encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
     }
