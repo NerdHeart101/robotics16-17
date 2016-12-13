@@ -124,10 +124,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderDrive(DRIVE_SPEED,  68, 68, 5.0);
-        encoderDrive(TURN_SPEED,  -24, 14, 4.0);
-
-
-
+        rotateBot(45);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -190,6 +187,12 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         }
     }
 
-
-
+    public void rotateBot(int degrees) {
+        // Degrees will be positive if turning to the left, and negative if turning to the right
+        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
+        double rightArc = arc/2;
+        double leftArc = -arc/2;
+        double rotateTimeout = TURN_SPEED*arc*2;
+        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
+    }
 }
