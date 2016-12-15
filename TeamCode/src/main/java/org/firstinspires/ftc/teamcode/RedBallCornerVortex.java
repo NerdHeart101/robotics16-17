@@ -67,9 +67,9 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
+@Autonomous(name="RED: Ball + Partial Corner", group="Pushbot")
 
-public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
+public class RedBallCornerVortex extends LinearOpMode {
 
     /* Declare OpMode members. */
     org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot robot   = new HardwarePushbot();   // Use a Pushbot's hardware
@@ -88,7 +88,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
     static final double DISTANCE_BETWEEN_WHEELS = 14.625;   // For figuring bot rotations
 
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_INCHES * Math.PI);
+            (WHEEL_DIAMETER_INCHES * Math.PI);
     static final double     DRIVE_SPEED             = 0.7 ;
     static final double     TURN_SPEED              = 0.5  ;
 
@@ -114,8 +114,8 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
-                          robot.leftMotor.getCurrentPosition(),
-                          robot.rightMotor.getCurrentPosition());
+                robot.leftMotor.getCurrentPosition(),
+                robot.rightMotor.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -191,6 +191,9 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
     }
 
     public void rotateRight(double degrees) {
+
+        degrees += 5;   // 5 degrees are added to account for errors in the encoders
+
         double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
         double rightArc = arc;
         double leftArc = -arc;
@@ -199,6 +202,9 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
     }
 
     public void rotateLeft(double degrees) {
+
+        degrees += 5;   // 5 degrees are added to account for errors in the encoders
+
         double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
         double rightArc = -arc;
         double leftArc = arc;
