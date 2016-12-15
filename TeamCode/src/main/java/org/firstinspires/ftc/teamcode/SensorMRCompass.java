@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
  * @see <a href="http://www.modernroboticsinc.com/compass">MR Compass Sensor</a>
  */
 @Autonomous(name = "Sensor: MR compass", group = "Sensor")
-   // comment out or remove this line to enable this opmode
+@Disabled
 public class SensorMRCompass extends LinearOpMode {
 
     ModernRoboticsI2cCompassSensor compass;
