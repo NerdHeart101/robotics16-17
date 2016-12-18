@@ -112,6 +112,8 @@ public class AutonomousBase extends LinearOpMode {
             robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
+
+            // if the test for the moveToTarget does not work, this may be the culprit.
             runtime.reset();
             robot.leftMotor.setPower(Math.abs(speed));
             robot.rightMotor.setPower(Math.abs(speed));
@@ -215,11 +217,11 @@ public class AutonomousBase extends LinearOpMode {
         double leftArc = leftTurnRadius * radiansAround;
         double rightArc = rightTurnRadius * radiansAround;
 
-        double moveTimeout = Math.max(leftArc,rightArc) * TURN_SPEED * 2;
+        double moveTimeout = Math.max(leftArc,rightArc) * DRIVE_SPEED * 2;
 
         // If this does not work, perhaps some changes to the encoder drive method are required.
         // We'll see, won't we?
-        encoderDrive(DRIVE_SPEED, rightArc, leftArc, moveTimeout);
+        encoderDrive(DRIVE_SPEED, leftArc, rightArc, moveTimeout);
 
     }
 }
