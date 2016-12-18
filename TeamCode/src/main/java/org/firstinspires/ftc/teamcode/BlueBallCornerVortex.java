@@ -42,14 +42,15 @@ public class BlueBallCornerVortex extends AutonomousBase {
     @Override
     public void runOpMode() {
 
-        super.initializeAutonomous();
+       initializeAutonomous();
 
         // Step through each leg of the path
-        super.driveStraight(-24);
-        super.rotateInPlace(-45);
-        super.driveStraight(-34);
-        super.rotateInPlace(90);
-        super.driveStraight(64);
+        driveStraight(-24);
+        rotateInPlace(-45);
+        driveStraight(-34);
+        rotateInPlace(90);
+        driveStraight(64);
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

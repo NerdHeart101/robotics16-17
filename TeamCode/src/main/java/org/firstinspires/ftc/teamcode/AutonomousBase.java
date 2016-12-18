@@ -28,7 +28,7 @@ public class AutonomousBase extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440  ;   // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 1.5   ;     // This is < 1.0 if geared UP
+    static final double     DRIVE_GEAR_REDUCTION    = 2.0   ;     // This is < 1.0 if geared UP
 
     /*
     // Competition bot
@@ -112,6 +112,8 @@ public class AutonomousBase extends LinearOpMode {
             robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
+
+            // if the test for the moveToTarget does not work, this may be the culprit.
             runtime.reset();
             robot.leftMotor.setPower(Math.abs(speed));
             robot.rightMotor.setPower(Math.abs(speed));
@@ -215,11 +217,11 @@ public class AutonomousBase extends LinearOpMode {
         double leftArc = leftTurnRadius * radiansAround;
         double rightArc = rightTurnRadius * radiansAround;
 
-        double moveTimeout = Math.max(leftArc,rightArc) * TURN_SPEED * 2;
+        double moveTimeout = Math.max(leftArc,rightArc) * DRIVE_SPEED * 2;
 
         // If this does not work, perhaps some changes to the encoder drive method are required.
         // We'll see, won't we?
-        encoderDrive(DRIVE_SPEED, rightArc, leftArc, moveTimeout);
+        encoderDrive(DRIVE_SPEED, leftArc, rightArc, moveTimeout);
 
     }
 }

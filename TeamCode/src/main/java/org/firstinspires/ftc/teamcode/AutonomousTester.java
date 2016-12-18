@@ -42,10 +42,10 @@ public class AutonomousTester extends AutonomousBase {
     @Override
     public void runOpMode() {
 
-        super.initializeAutonomous();
+        initializeAutonomous();
 
         // Step through each leg of the path
-        super.moveToTarget(24,45);
+        moveToTarget(24,45);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
