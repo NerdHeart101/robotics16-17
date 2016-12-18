@@ -29,15 +29,17 @@ public class AutonomousBase extends LinearOpMode {
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440  ;   // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.5   ;     // This is < 1.0 if geared UP
-    // Competition bot
+
     /*
+    // Competition bot
     static final double     WHEEL_DIAMETER_INCHES   = 6.0   ;     // For figuring circumference
     static final double     DISTANCE_BETWEEN_WHEELS = 13.5  ;    // For figuring bot rotations
     */
-    // Pushbot
 
+    // Pushbot
     static final double     WHEEL_DIAMETER_INCHES   = 4.0   ;   // For figuring circumference
     static final double     DISTANCE_BETWEEN_WHEELS = 14.625;   // For figuring bot rotations
+
 
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION)
                                                       / (WHEEL_DIAMETER_INCHES * Math.PI);
@@ -142,11 +144,22 @@ public class AutonomousBase extends LinearOpMode {
     // The following methods are all created in order to further increase readability.
     // And to reduce keystrokes. Efficiency, yo!
 
-    public void driveStraight(int inches) {
+    public void driveStraight(double inches) {
 
         double straightTimeout = inches / 8.0;
         encoderDrive(DRIVE_SPEED, inches, inches, straightTimeout);
 
+    }
+    /*
+    public void rotateLeft(double degrees) {
+
+        degrees += 5;   // 5 degrees are added to account for errors in the encoders
+
+        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
+        double rightArc = -arc;
+        double leftArc = arc;
+        double rotateTimeout = TURN_SPEED*arc*2;
+        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
     }
 
     public void rotateRight(double degrees) {
@@ -159,15 +172,54 @@ public class AutonomousBase extends LinearOpMode {
         double rotateTimeout = TURN_SPEED*arc*2;
         encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
     }
+    */
+    // A method to rotate the bot in place.
+    // Positive degrees is left, negative is right.
+    public void rotateInPlace(double degrees) {
 
-    public void rotateLeft(double degrees) {
+        if(degrees>0) {
 
-        degrees += 5;   // 5 degrees are added to account for errors in the encoders
+            degrees += 5;   // 5 degrees are added to account for errors in the encoders
 
-        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-        double rightArc = -arc;
-        double leftArc = arc;
-        double rotateTimeout = TURN_SPEED*arc*2;
-        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
+            double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
+            double rightArc = -arc;
+            double leftArc = arc;
+            double rotateTimeout = TURN_SPEED*arc*2;
+            encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
+
+        } else if(degrees<0) {
+
+            degrees = Math.abs(degrees);    // Degrees are made positive because if they aren't bad things happen
+            degrees += 5;   // 5 degrees are added to account for errors in the encoders
+
+            double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
+            double rightArc = arc;
+            double leftArc = -arc;
+            double rotateTimeout = TURN_SPEED*arc*2;
+            encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
+        }
+
+    }
+
+    // A method to have the bot move in a circular path to a target.
+    public void moveToTarget(double distanceToTarget, double degreesToTarget) {
+
+        degreesToTarget += 5;
+
+        double radiansToTarget = Math.toRadians(degreesToTarget);
+        double radiansAround = Math.PI - ( 2 * radiansToTarget );
+        double turnRadius = distanceToTarget / ( 2 * Math.abs ( Math.cos ( radiansToTarget )));
+        double leftTurnRadius = turnRadius - ( DISTANCE_BETWEEN_WHEELS / 2 );
+        double rightTurnRadius = turnRadius + ( DISTANCE_BETWEEN_WHEELS / 2 );
+
+        double leftArc = leftTurnRadius * radiansAround;
+        double rightArc = rightTurnRadius * radiansAround;
+
+        double moveTimeout = Math.max(leftArc,rightArc) * TURN_SPEED * 2;
+
+        // If this does not work, perhaps some changes to the encoder drive method are required.
+        // We'll see, won't we?
+        encoderDrive(DRIVE_SPEED, rightArc, leftArc, moveTimeout);
+
     }
 }

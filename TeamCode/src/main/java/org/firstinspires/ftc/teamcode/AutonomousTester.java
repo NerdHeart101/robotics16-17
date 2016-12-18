@@ -44,13 +44,8 @@ public class AutonomousTester extends AutonomousBase {
 
         super.initializeAutonomous();
 
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        super.driveStraight(-24);
-        super.rotateLeft(45);
-        super.driveStraight(-34);
-        super.rotateRight(90);
-        super.driveStraight(64);
+        // Step through each leg of the path
+        super.moveToTarget(24,45);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

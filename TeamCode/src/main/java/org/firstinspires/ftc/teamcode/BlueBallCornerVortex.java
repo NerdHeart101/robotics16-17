@@ -44,12 +44,11 @@ public class BlueBallCornerVortex extends AutonomousBase {
 
         super.initializeAutonomous();
 
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        // Step through each leg of the path
         super.driveStraight(-24);
-        super.rotateRight(45);
+        super.rotateInPlace(-45);
         super.driveStraight(-34);
-        super.rotateLeft(90);
+        super.rotateInPlace(90);
         super.driveStraight(64);
 
         telemetry.addData("Path", "Complete");
