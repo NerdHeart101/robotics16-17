@@ -47,6 +47,7 @@ public class AutonomousBase extends LinearOpMode {
     @Override
     public void runOpMode() {
         telemetry.addData("Error", "This should not be seen. Check the AutonomousBase class");
+        telemetry.update();
     }
 
     /*
