@@ -112,8 +112,6 @@ public class AutonomousBase extends LinearOpMode {
             robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
-
-            // if the test for the moveToTarget does not work, this may be the culprit.
             runtime.reset();
             robot.leftMotor.setPower(Math.abs(speed));
             robot.rightMotor.setPower(Math.abs(speed));
@@ -143,6 +141,37 @@ public class AutonomousBase extends LinearOpMode {
         }
     }
 
+    /* Commented out so Android Studio doesn't yell when pushing
+    // A method in order to use the kicker to launch a ball.
+    public void launchBall() {
+
+        int newKickerTarget;
+
+        // Make sure opmode is still active
+        if(opModeIsActive()) {
+
+            // Get the kicker's position and set the target one position ahead
+            newKickerTarget = robot.kickerMotor.getCurrentPosition() + COUNTS_PER_MOTOR_REV;
+            robot.kickerMotor.setTargetPosition(newKickerTarget);
+
+            // Set the motor mode and start the motor moving
+            robot.kickerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.kickerMotor.setPower(1);
+
+            // As long as the OpMode is active, keep the shooting going
+            while(opModeIsActive() && robot.kickerMotor.isBusy()) {
+
+                // Display information for the driver.
+                telemetry.addData("Kicker running:", true);
+                telemetry.update();
+            }
+
+            // Stop motion and reset motor run mode
+            robot.kickerMotor.setPower(0);
+            robot.kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }*/
+
     // The following methods are all created in order to further increase readability.
     // And to reduce keystrokes. Efficiency, yo!
 
@@ -152,29 +181,7 @@ public class AutonomousBase extends LinearOpMode {
         encoderDrive(DRIVE_SPEED, inches, inches, straightTimeout);
 
     }
-    /*
-    public void rotateLeft(double degrees) {
 
-        degrees += 5;   // 5 degrees are added to account for errors in the encoders
-
-        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-        double rightArc = -arc;
-        double leftArc = arc;
-        double rotateTimeout = TURN_SPEED*arc*2;
-        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
-    }
-
-    public void rotateRight(double degrees) {
-
-        degrees += 5;   // 5 degrees are added to account for errors in the encoders
-
-        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-        double rightArc = arc;
-        double leftArc = -arc;
-        double rotateTimeout = TURN_SPEED*arc*2;
-        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
-    }
-    */
     // A method to rotate the bot in place.
     // Positive degrees is left, negative is right.
     public void rotateInPlace(double degrees) {
@@ -203,7 +210,8 @@ public class AutonomousBase extends LinearOpMode {
 
     }
 
-    // A method to have the bot move in a circular path to a target.
+    // A method to have the bot move in a circular path to a target
+    // TODO: check the math and make sure everything in this method works
     public void moveToTarget(double distanceToTarget, double degreesToTarget) {
 
         degreesToTarget += 5;
