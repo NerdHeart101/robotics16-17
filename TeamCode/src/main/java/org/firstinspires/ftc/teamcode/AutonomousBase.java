@@ -115,8 +115,14 @@ public class AutonomousBase extends LinearOpMode {
 
             // if the test for the moveToTarget does not work, this may be the culprit.
             runtime.reset();
-            robot.leftMotor.setPower(Math.abs(speed));
-            robot.rightMotor.setPower(Math.abs(speed));
+
+            double leftRatio = Math.abs(leftInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
+            double rightRatio = Math.abs(rightInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
+            double leftSpeed = Math.abs(speed) * leftRatio;
+            double rightSpeed = Math.abs(speed) * rightRatio;
+            robot.leftMotor.setPower(leftSpeed);
+            robot.rightMotor.setPower(rightSpeed);
+
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
@@ -148,7 +154,7 @@ public class AutonomousBase extends LinearOpMode {
 
     public void driveStraight(double inches) {
 
-        double straightTimeout = inches / 8.0;
+        double straightTimeout = Math.abs(inches) / 8.0;
         encoderDrive(DRIVE_SPEED, inches, inches, straightTimeout);
 
     }
@@ -179,27 +185,14 @@ public class AutonomousBase extends LinearOpMode {
     // Positive degrees is left, negative is right.
     public void rotateInPlace(double degrees) {
 
-        if(degrees>0) {
+        degrees += 5;   // 5 degrees are added to account for errors in the encoders
 
-            degrees += 5;   // 5 degrees are added to account for errors in the encoders
+        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
+        double rightArc = -arc;
+        double leftArc = arc;
+        double rotateTimeout = Math.abs(arc)*TURN_SPEED*2;
+        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
 
-            double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-            double rightArc = -arc;
-            double leftArc = arc;
-            double rotateTimeout = TURN_SPEED*arc*2;
-            encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
-
-        } else if(degrees<0) {
-
-            degrees = Math.abs(degrees);    // Degrees are made positive because if they aren't bad things happen
-            degrees += 5;   // 5 degrees are added to account for errors in the encoders
-
-            double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-            double rightArc = arc;
-            double leftArc = -arc;
-            double rotateTimeout = TURN_SPEED*arc*2;
-            encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
-        }
 
     }
 
