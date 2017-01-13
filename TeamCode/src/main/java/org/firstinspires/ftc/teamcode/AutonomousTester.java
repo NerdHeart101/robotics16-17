@@ -44,8 +44,7 @@ public class AutonomousTester extends AutonomousBase {
 
         initializeAutonomous();
 
-        // Step through each leg of the path
-        moveToTarget(24,45);
+        launchBall();
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

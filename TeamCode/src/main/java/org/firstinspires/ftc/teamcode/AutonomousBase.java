@@ -30,16 +30,16 @@ public class AutonomousBase extends LinearOpMode {
     static final double     COUNTS_PER_MOTOR_REV    = 1440  ;   // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0   ;     // This is < 1.0 if geared UP
 
-    /*
+
     // Competition bot
     static final double     WHEEL_DIAMETER_INCHES   = 6.0   ;     // For figuring circumference
-    static final double     DISTANCE_BETWEEN_WHEELS = 13.5  ;    // For figuring bot rotations
-    */
+    static final double     DISTANCE_BETWEEN_WHEELS = 16.0  ;    // For figuring bot rotations
 
+    /*
     // Pushbot
     static final double     WHEEL_DIAMETER_INCHES   = 4.0   ;   // For figuring circumference
     static final double     DISTANCE_BETWEEN_WHEELS = 14.625;   // For figuring bot rotations
-
+     */
 
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION)
                                                       / (WHEEL_DIAMETER_INCHES * Math.PI);
@@ -69,10 +69,14 @@ public class AutonomousBase extends LinearOpMode {
 
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.kickerMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         idle();
 
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.elevatorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
@@ -113,8 +117,14 @@ public class AutonomousBase extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            robot.leftMotor.setPower(Math.abs(speed));
-            robot.rightMotor.setPower(Math.abs(speed));
+
+            double leftRatio = Math.abs(leftInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
+            double rightRatio = Math.abs(rightInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
+            double leftSpeed = Math.abs(speed) * leftRatio;
+            double rightSpeed = Math.abs(speed) * rightRatio;
+            robot.leftMotor.setPower(leftSpeed);
+            robot.rightMotor.setPower(rightSpeed);
+
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
@@ -141,7 +151,6 @@ public class AutonomousBase extends LinearOpMode {
         }
     }
 
-    /* Commented out so Android Studio doesn't yell when pushing
     // A method in order to use the kicker to launch a ball.
     public void launchBall() {
 
@@ -151,7 +160,7 @@ public class AutonomousBase extends LinearOpMode {
         if(opModeIsActive()) {
 
             // Get the kicker's position and set the target one position ahead
-            newKickerTarget = robot.kickerMotor.getCurrentPosition() + COUNTS_PER_MOTOR_REV;
+            newKickerTarget = robot.kickerMotor.getCurrentPosition() + (int)COUNTS_PER_MOTOR_REV;
             robot.kickerMotor.setTargetPosition(newKickerTarget);
 
             // Set the motor mode and start the motor moving
@@ -162,7 +171,10 @@ public class AutonomousBase extends LinearOpMode {
             while(opModeIsActive() && robot.kickerMotor.isBusy()) {
 
                 // Display information for the driver.
-                telemetry.addData("Kicker running:", true);
+                //telemetry.addData("Kicker running:", true);
+                //telemetry.update();
+                telemetry.addData("Path1", "Kicker running to %7d", newKickerTarget);
+                telemetry.addData("Path2", "Kicker at %7d", robot.kickerMotor.getCurrentPosition());
                 telemetry.update();
             }
 
@@ -170,14 +182,14 @@ public class AutonomousBase extends LinearOpMode {
             robot.kickerMotor.setPower(0);
             robot.kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-    }*/
+    }
 
     // The following methods are all created in order to further increase readability.
     // And to reduce keystrokes. Efficiency, yo!
 
     public void driveStraight(double inches) {
 
-        double straightTimeout = inches / 8.0;
+        double straightTimeout = Math.abs(inches) / 8.0;
         encoderDrive(DRIVE_SPEED, inches, inches, straightTimeout);
 
     }
@@ -186,32 +198,18 @@ public class AutonomousBase extends LinearOpMode {
     // Positive degrees is left, negative is right.
     public void rotateInPlace(double degrees) {
 
-        if(degrees>0) {
+        degrees += 5;   // 5 degrees are added to account for errors in the encoders
 
-            degrees += 5;   // 5 degrees are added to account for errors in the encoders
+        double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
+        double rightArc = -arc;
+        double leftArc = arc;
+        double rotateTimeout = Math.abs(arc)*TURN_SPEED*2;
+        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
 
-            double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-            double rightArc = -arc;
-            double leftArc = arc;
-            double rotateTimeout = TURN_SPEED*arc*2;
-            encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
-
-        } else if(degrees<0) {
-
-            degrees = Math.abs(degrees);    // Degrees are made positive because if they aren't bad things happen
-            degrees += 5;   // 5 degrees are added to account for errors in the encoders
-
-            double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-            double rightArc = arc;
-            double leftArc = -arc;
-            double rotateTimeout = TURN_SPEED*arc*2;
-            encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
-        }
 
     }
 
     // A method to have the bot move in a circular path to a target
-    // TODO: check the math and make sure everything in this method works
     public void moveToTarget(double distanceToTarget, double degreesToTarget) {
 
         degreesToTarget += 5;
