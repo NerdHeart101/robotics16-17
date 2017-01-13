@@ -151,6 +151,15 @@ public class AutonomousBase extends LinearOpMode {
         }
     }
 
+    // Wait for an inputted number of seconds
+    public void waitTime(int seconds) {
+        runtime.reset();
+        while(runtime.seconds() < seconds) {
+            telemetry.addData("Timer","Waiting for %2d seconds",seconds);
+            telemetry.update();
+        }
+    }
+
     // A method in order to use the kicker to launch a ball.
     public void launchBall() {
 
@@ -212,8 +221,15 @@ public class AutonomousBase extends LinearOpMode {
     // A method to have the bot move in a circular path to a target
     public void moveToTarget(double distanceToTarget, double degreesToTarget) {
 
-        degreesToTarget += 5;
+        degreesToTarget += 5; // 5 degrees are added to account for errors in the encoders
 
+        /* Do all the math in order to find out the distance each wheel has to go
+         * radiansToTarget is the conversion of degreesToTarget into a form easier to do math on
+         * radiansAround is the section of the total "circle" the bot will traverse
+         * turnRadius is the distance from the center of the bot to the center of the "circle"
+         * left- and right- TurnRadius are the distance from each wheel to the center of the "circle"
+         * left- and right- Arc are the distance each wheel has to travel
+         */
         double radiansToTarget = Math.toRadians(degreesToTarget);
         double radiansAround = 2 * radiansToTarget;
         double turnRadius = distanceToTarget * (Math.sin(Math.PI / 2 - radiansToTarget) /
@@ -226,8 +242,6 @@ public class AutonomousBase extends LinearOpMode {
 
         double moveTimeout = Math.max(Math.abs(leftArc),Math.abs(rightArc)) * DRIVE_SPEED * 2;
 
-        // If this does not work, perhaps some changes to the encoder drive method are required.
-        // We'll see, won't we?
         encoderDrive(DRIVE_SPEED, leftArc, rightArc, moveTimeout);
 
     }
