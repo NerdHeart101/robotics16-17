@@ -215,15 +215,16 @@ public class AutonomousBase extends LinearOpMode {
         degreesToTarget += 5;
 
         double radiansToTarget = Math.toRadians(degreesToTarget);
-        double radiansAround = Math.PI - ( 2 * radiansToTarget );
-        double turnRadius = distanceToTarget / ( 2 * Math.abs ( Math.cos ( radiansToTarget )));
+        double radiansAround = 2 * radiansToTarget;
+        double turnRadius = distanceToTarget * (Math.sin(Math.PI / 2 - radiansToTarget) /
+                (Math.sin( 2 * radiansToTarget )));
         double leftTurnRadius = turnRadius - ( DISTANCE_BETWEEN_WHEELS / 2 );
         double rightTurnRadius = turnRadius + ( DISTANCE_BETWEEN_WHEELS / 2 );
 
         double leftArc = leftTurnRadius * radiansAround;
         double rightArc = rightTurnRadius * radiansAround;
 
-        double moveTimeout = Math.max(leftArc,rightArc) * DRIVE_SPEED * 2;
+        double moveTimeout = Math.max(Math.abs(leftArc),Math.abs(rightArc)) * DRIVE_SPEED * 2;
 
         // If this does not work, perhaps some changes to the encoder drive method are required.
         // We'll see, won't we?
