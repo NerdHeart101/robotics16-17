@@ -24,8 +24,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class AutonomousBase extends LinearOpMode {
 
     /* Declare OpMode members. */
-    org.firstinspires.ftc.teamcode.HardwarePushbot robot   = new HardwarePushbot();
-    private ElapsedTime     runtime = new ElapsedTime();
+    HardwarePushbot     robot   = new HardwarePushbot();
+    private ElapsedTime runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440  ;   // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0   ;     // This is < 1.0 if geared UP
@@ -139,7 +139,7 @@ public class AutonomousBase extends LinearOpMode {
                 telemetry.update();
             }
 
-            // Stop all motion;
+            // Stop all motion
             robot.leftMotor.setPower(0);
             robot.rightMotor.setPower(0);
 
@@ -148,15 +148,6 @@ public class AutonomousBase extends LinearOpMode {
             robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
-        }
-    }
-
-    // Wait for an inputted number of seconds
-    public void waitTime(int seconds) {
-        runtime.reset();
-        while(runtime.seconds() < seconds) {
-            telemetry.addData("Timer","Waiting for %2d seconds",seconds);
-            telemetry.update();
         }
     }
 
@@ -179,9 +170,6 @@ public class AutonomousBase extends LinearOpMode {
             // As long as the OpMode is active, keep the shooting going
             while(opModeIsActive() && robot.kickerMotor.isBusy()) {
 
-                // Display information for the driver.
-                //telemetry.addData("Kicker running:", true);
-                //telemetry.update();
                 telemetry.addData("Path1", "Kicker running to %7d", newKickerTarget);
                 telemetry.addData("Path2", "Kicker at %7d", robot.kickerMotor.getCurrentPosition());
                 telemetry.update();
@@ -193,9 +181,43 @@ public class AutonomousBase extends LinearOpMode {
         }
     }
 
+    // Wait for a specified number of seconds
+    public void waitTime(int seconds) {
+        runtime.reset();
+        while(runtime.seconds() < seconds) {
+            telemetry.addData("Timer","Waiting for %2d seconds",seconds);
+            telemetry.update();
+        }
+    }
+
     // The following methods are all created in order to further increase readability.
     // And to reduce keystrokes. Efficiency, yo!
 
+    // A method to have the bot move in a circular path to a target.
+    // It can perform the job of both the driveStraight and rotateInPlace methods.
+    // Whether it is advantageous to do so is yet to be found out
+    public void moveToTarget(double distanceToTarget, double degreesToTarget) {
+
+        degreesToTarget += 5; // 5 degrees are added to account for errors in the encoders
+
+        // Do all the math in order to find out the distance each wheel has to go
+        double radiansToTarget = Math.toRadians(degreesToTarget);
+        double radiansAround = 2 * radiansToTarget;
+        double turnRadius = distanceToTarget * (Math.sin(Math.PI / 2 - radiansToTarget) /
+                (Math.sin(radiansAround)));
+        double leftTurnRadius = turnRadius - ( DISTANCE_BETWEEN_WHEELS / 2 );
+        double rightTurnRadius = turnRadius + ( DISTANCE_BETWEEN_WHEELS / 2 );
+
+        double leftArc = leftTurnRadius * radiansAround;
+        double rightArc = rightTurnRadius * radiansAround;
+
+        double moveTimeout = Math.max(Math.abs(leftArc),Math.abs(rightArc)) * DRIVE_SPEED * 2;
+
+        encoderDrive(DRIVE_SPEED, leftArc, rightArc, moveTimeout);
+
+    }
+
+    // A method to move the bot straight forward.
     public void driveStraight(double inches) {
 
         double straightTimeout = Math.abs(inches) / 8.0;
@@ -210,39 +232,10 @@ public class AutonomousBase extends LinearOpMode {
         degrees += 5;   // 5 degrees are added to account for errors in the encoders
 
         double arc = DISTANCE_BETWEEN_WHEELS * degrees * Math.PI / 360;
-        double rightArc = -arc;
-        double leftArc = arc;
+        double leftArc = -arc;
+        double rightArc = arc;
         double rotateTimeout = Math.abs(arc)*TURN_SPEED*2;
-        encoderDrive(TURN_SPEED, rightArc, leftArc, rotateTimeout);
-
-
-    }
-
-    // A method to have the bot move in a circular path to a target
-    public void moveToTarget(double distanceToTarget, double degreesToTarget) {
-
-        degreesToTarget += 5; // 5 degrees are added to account for errors in the encoders
-
-        /* Do all the math in order to find out the distance each wheel has to go
-         * radiansToTarget is the conversion of degreesToTarget into a form easier to do math on
-         * radiansAround is the section of the total "circle" the bot will traverse
-         * turnRadius is the distance from the center of the bot to the center of the "circle"
-         * left- and right- TurnRadius are the distance from each wheel to the center of the "circle"
-         * left- and right- Arc are the distance each wheel has to travel
-         */
-        double radiansToTarget = Math.toRadians(degreesToTarget);
-        double radiansAround = 2 * radiansToTarget;
-        double turnRadius = distanceToTarget * (Math.sin(Math.PI / 2 - radiansToTarget) /
-                (Math.sin( 2 * radiansToTarget )));
-        double leftTurnRadius = turnRadius - ( DISTANCE_BETWEEN_WHEELS / 2 );
-        double rightTurnRadius = turnRadius + ( DISTANCE_BETWEEN_WHEELS / 2 );
-
-        double leftArc = leftTurnRadius * radiansAround;
-        double rightArc = rightTurnRadius * radiansAround;
-
-        double moveTimeout = Math.max(Math.abs(leftArc),Math.abs(rightArc)) * DRIVE_SPEED * 2;
-
-        encoderDrive(DRIVE_SPEED, leftArc, rightArc, moveTimeout);
+        encoderDrive(TURN_SPEED, leftArc, rightArc, rotateTimeout);
 
     }
 }
