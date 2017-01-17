@@ -38,21 +38,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 /**
- * This file provides basic Telop driving for a Pushbot robot.
- * The code is structured as an Iterative OpMode
- *
- * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
- * All device access is managed through the HardwarePushbot class.
- *
- * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
+ * This code is to drive the competition bot using either one or two drivers
+ * Each of the drivers controls all aspects of the bot
+ * If two inputs for the same motor are received, the player normally with that control takes priority
  */
 
-@TeleOp(name="Pushbot: Teleop Tank", group="Pushbot")
+@TeleOp(name="Teleop Tank (Testing)", group="Pushbot")
 
-public class PushbotTeleopTank_Iterative extends OpMode{
+public class TeleopTankTest extends OpMode{
 
     /* Declare OpMode members. */
-    HardwarePushbot robot = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
+    HardwarePushbot robot   = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
     // could also use HardwarePushbotMatrix class.
 
     /*
@@ -99,7 +95,6 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         double intake,intakePrimary,intakeSecondary;
         double elevator,elevatorPrimary,elevatorSecondary;
         double kicker,kickerPrimary,kickerSecondary;
-        boolean allowAlternateControls = false;
 
         // Driver 1 - Driving and intake
 
@@ -110,10 +105,7 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         // Intake - A or right trigger for intake, B or right bumper for output
         // If allowAlternateControls is true, then RT and RB are not available, so adjust.
         // Holy nested if-else Batman!
-        intakePrimary = !allowAlternateControls ?
-                gamepad1.a ? INTAKE_POWER : gamepad1.b ? -INTAKE_POWER :
-                !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER :
-                gamepad1.a ? INTAKE_POWER : gamepad1.b ? -INTAKE_POWER : 0.0;
+        intakePrimary = gamepad1.a ? INTAKE_POWER : gamepad1.b ? -INTAKE_POWER : 0.0;
 
         // Driver 2 - Elevator and kicker
 
@@ -125,35 +117,26 @@ public class PushbotTeleopTank_Iterative extends OpMode{
         kickerPrimary = gamepad2.right_trigger != 0 ? gamepad2.right_trigger * KICKER_POWER
                 : gamepad2.right_bumper ? -KICKER_POWER : 0.0;
 
+
         // Alternate controls allow for each driver to perform actions delegated to the other
-        if(allowAlternateControls) {
+        // Driver 1 Alternate - Elevator and kicker
 
-            // Driver 1 Alternate - Elevator and kicker
-
-            // Elevator - Left trigger for forward, left bumper for reverse
-            elevatorSecondary = gamepad1.left_trigger != 0 ? gamepad1.left_trigger * ELEVATOR_POWER
+        // Elevator - Left trigger for forward, left bumper for reverse
+        elevatorSecondary = gamepad1.left_trigger != 0 ? gamepad1.left_trigger * ELEVATOR_POWER
                     : gamepad1.left_bumper ? -ELEVATOR_POWER : 0.0;
 
-            // Kicker - Right trigger for forward, right bumper for reverse
-            kickerSecondary = gamepad1.right_trigger != 0 ? gamepad1.right_trigger * KICKER_POWER
+        // Kicker - Right trigger for forward, right bumper for reverse
+        kickerSecondary = gamepad1.right_trigger != 0 ? gamepad1.right_trigger * KICKER_POWER
                     : gamepad1.right_bumper ? -KICKER_POWER : 0.0;
 
-            // Driver 2 Alternate - Driving and intake
+        // Driver 2 Alternate - Driving and intake
 
-            // Run wheels in tank mode
-            leftSecondary = gamepad2.left_stick_y;
-            rightSecondary = gamepad2.right_stick_y;
+        // Run wheels in tank mode
+        leftSecondary = gamepad2.left_stick_y;
+        rightSecondary = gamepad2.right_stick_y;
 
-            // Intake - A for intake, B button for output (Note that trigger controls are not applied)
-            intakeSecondary = gamepad2.a ? INTAKE_POWER : gamepad2.b ? -INTAKE_POWER : 0.0;
-
-        } else {
-            leftSecondary = 0;
-            rightSecondary = 0;
-            intakeSecondary = 0;
-            elevatorSecondary = 0;
-            kickerSecondary = 0;
-        }
+        // Intake - A for intake, B button for output (Note that trigger controls are not applied)
+        intakeSecondary = gamepad2.a ? INTAKE_POWER : gamepad2.b ? -INTAKE_POWER : 0.0;
 
         // Resolve conflicts of primary and alternate controls
         left = leftPrimary != 0 ? leftPrimary : leftSecondary;
