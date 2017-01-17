@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Created by Maint on 12/14/2016.
  */
 @Autonomous(name = "Sensor: MR Color", group = "Sensor")
-public class PushbotAutoBecon extends LinearOpMode {
+public class PushbotAutoBeacon extends LinearOpMode {
 
     ColorSensor colorSensor;    // Hardware Device Object
 
@@ -51,7 +51,6 @@ public class PushbotAutoBecon extends LinearOpMode {
         while (opModeIsActive()) {
 
             // check the status of the x button on either gamepad.
-           // bCurrState = gamepad1.x;
 
             // check for button state transitions.
             if ((bCurrState == true) && (bCurrState != bPrevState)) {

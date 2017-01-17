@@ -88,12 +88,11 @@ public class TeleopTankComp extends OpMode{
      */
     @Override
     public void loop() {
-        double left,leftPrimary,leftSecondary;
-        double right,rightPrimary,rightSecondary;
-        double intake,intakePrimary,intakeSecondary;
-        double elevator,elevatorPrimary,elevatorSecondary;
-        double kicker,kickerPrimary,kickerSecondary;
-        boolean allowAlternateControls = false;
+        double left;
+        double right;
+        double intake;
+        double elevator;
+        double kicker;
 
         // Driver 1 - Driving and intake
 
@@ -101,10 +100,9 @@ public class TeleopTankComp extends OpMode{
         left = gamepad1.left_stick_y * DRIVE_POWER;
         right = gamepad1.right_stick_y * DRIVE_POWER;
 
-        // Intake - A or right trigger for intake, B or right bumper for output
-        // If allowAlternateControls is true, then RT and RB are not available, so adjust.
-        // Holy nested if-else Batman!
+        // Intake - A or right trigger for intake, B or right bumper for
         intake = !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER;
+
         // Driver 2 - Elevator and kicker
 
         // Elevator - Left trigger for forward, left bumper for reverse
