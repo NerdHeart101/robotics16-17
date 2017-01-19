@@ -28,12 +28,12 @@ public class AutonomousBase extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440  ;   // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0   ;     // This is < 1.0 if geared UP
+    static final double     DRIVE_GEAR_REDUCTION    = 2.0   ;   // This is < 1.0 if geared UP
 
 
     // Competition bot
-    static final double     WHEEL_DIAMETER_INCHES   = 6.0   ;     // For figuring circumference
-    static final double     DISTANCE_BETWEEN_WHEELS = 16.0  ;    // For figuring bot rotations
+    static final double     WHEEL_DIAMETER_INCHES   = 6.0   ;   // For figuring circumference
+    static final double     DISTANCE_BETWEEN_WHEELS = 16.0  ;   // For figuring bot rotations
 
     /*
     // Pushbot
