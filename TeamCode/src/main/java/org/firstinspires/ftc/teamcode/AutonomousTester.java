@@ -45,6 +45,8 @@ public class AutonomousTester extends AutonomousBase {
         initializeAutonomous();
 
         launchBall();
+        nextBall();
+        launchBall();
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
