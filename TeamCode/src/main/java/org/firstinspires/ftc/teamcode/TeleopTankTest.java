@@ -56,7 +56,7 @@ public class TeleopTankTest extends OpMode{
      */
 
     double DRIVE_POWER = .6;
-    double INTAKE_POWER = .15;
+    double INTAKE_POWER = .2;
     double ELEVATOR_POWER = 1;
     double KICKER_POWER = 1;
 

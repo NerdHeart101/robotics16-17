@@ -45,6 +45,8 @@ public class AutonomousBase extends LinearOpMode {
                                                       / (WHEEL_DIAMETER_INCHES * Math.PI);
     static final double     DRIVE_SPEED             = 0.7   ;
     static final double     TURN_SPEED              = 0.5   ;
+    static final double     ELEVATOR_POWER          = 1     ;
+    static final double     KICKER_POWER            = 1     ;
 
     @Override
     public void runOpMode() {
@@ -79,9 +81,11 @@ public class AutonomousBase extends LinearOpMode {
         robot.kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0",  "Starting at %7d :%7d",
+        telemetry.addData("Path0",  "Starting at %7d :%7d ::%7d ::%7d",
                 robot.leftMotor.getCurrentPosition(),
-                robot.rightMotor.getCurrentPosition());
+                robot.rightMotor.getCurrentPosition(),
+                robot.elevatorMotor.getCurrentPosition(),
+                robot.kickerMotor.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -155,6 +159,7 @@ public class AutonomousBase extends LinearOpMode {
     public void launchBall() {
 
         int newKickerTarget;
+        double timeoutS = 33.0 / 34.0;
 
         // Make sure opmode is still active
         if(opModeIsActive()) {
@@ -165,10 +170,11 @@ public class AutonomousBase extends LinearOpMode {
 
             // Set the motor mode and start the motor moving
             robot.kickerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            runtime.reset();
             robot.kickerMotor.setPower(1);
 
-            // As long as the OpMode is active, keep the shooting going
-            while(opModeIsActive() && robot.kickerMotor.isBusy()) {
+            while(opModeIsActive() && robot.kickerMotor.isBusy()
+                    && runtime.seconds() < timeoutS) {
 
                 telemetry.addData("Path1", "Kicker running to %7d", newKickerTarget);
                 telemetry.addData("Path2", "Kicker at %7d", robot.kickerMotor.getCurrentPosition());
@@ -178,6 +184,19 @@ public class AutonomousBase extends LinearOpMode {
             // Stop motion and reset motor run mode
             robot.kickerMotor.setPower(0);
             robot.kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
+
+    // Advance the elevator to the next ball
+    public void nextBall() {
+        runtime.reset();
+        if(opModeIsActive()) {
+            robot.elevatorMotor.setPower(ELEVATOR_POWER);
+            while (runtime.milliseconds() < 580) {
+                telemetry.addData("Elevator", "Getting next ball");
+                telemetry.update();
+            }
+            robot.elevatorMotor.setPower(0);
         }
     }
 
