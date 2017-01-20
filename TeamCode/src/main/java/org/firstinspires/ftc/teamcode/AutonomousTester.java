@@ -35,7 +35,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="Launcher Test", group="Pushbot")
+@Autonomous(name="Launcher Test", group="Compbot")
 
 public class AutonomousTester extends AutonomousBase {
 

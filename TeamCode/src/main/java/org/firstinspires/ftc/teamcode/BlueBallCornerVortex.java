@@ -35,7 +35,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="BLUE: Ball + Corner Vortex", group="Pushbot")
+@Autonomous(name="BLUE: Ball + Corner Vortex", group="Compbot")
 
 public class BlueBallCornerVortex extends AutonomousBase {
 

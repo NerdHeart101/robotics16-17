@@ -32,10 +32,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
 /**
  * This code is to drive the competition bot using either one or two drivers
@@ -43,18 +41,14 @@ import com.qualcomm.robotcore.util.Range;
  * If two inputs for the same motor are received, the player normally with that control takes priority
  */
 
-@TeleOp(name="Teleop Tank (Testing)", group="Pushbot")
+@TeleOp(name="Teleop Tank (Testing)", group="Compbot")
 
-public class TeleopTankTest extends OpMode{
+public class CompbotTankTest extends OpMode{
 
-    /* Declare OpMode members. */
-    HardwarePushbot robot   = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
-    // could also use HardwarePushbotMatrix class.
+    // Access the robot
+    HardwareCompbot robot   = new HardwareCompbot();
 
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
-
+    // Powers (speeds) for each motor
     double DRIVE_POWER = .6;
     double INTAKE_POWER = .2;
     double ELEVATOR_POWER = 1;

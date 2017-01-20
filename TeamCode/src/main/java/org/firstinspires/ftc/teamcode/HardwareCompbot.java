@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class HardwarePushbot
+public class HardwareCompbot
 {
     /* Public OpMode members. */
     public DcMotor  leftMotor       = null;
@@ -20,7 +20,7 @@ public class HardwarePushbot
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwarePushbot(){
+    public HardwareCompbot(){
 
     }
 

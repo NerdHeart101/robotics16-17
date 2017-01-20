@@ -32,27 +32,21 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
 /**
  * This code is to drive the competition bot using two drivers controlling different aspects of the bot
  */
 
-@TeleOp(name="Teleop Tank (Competition)", group="Pushbot")
+@TeleOp(name="Teleop Tank (Competition)", group="Compbot")
 
-public class TeleopTankComp extends OpMode{
+public class CompbotTankComp extends OpMode{
 
-    /* Declare OpMode members. */
-    HardwarePushbot robot   = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
-    // could also use HardwarePushbotMatrix class.
+    // Access the robot
+    HardwareCompbot robot   = new HardwareCompbot();
 
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
-
+    // Powers (speeds) for each motor
     double DRIVE_POWER = .6;
     double INTAKE_POWER = .2;
     double ELEVATOR_POWER = 1;
@@ -60,39 +54,17 @@ public class TeleopTankComp extends OpMode{
 
     @Override
     public void init() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
+
+        // Initialize the robot
         robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Drivers");    //
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
-
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
-    }
-
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
     @Override
     public void loop() {
-        double left;
-        double right;
-        double intake;
-        double elevator;
-        double kicker;
+        double left,right,intake,elevator,kicker;
 
         // Driver 1 - Driving and intake
 
@@ -126,12 +98,5 @@ public class TeleopTankComp extends OpMode{
         telemetry.addData("intake",   "%.2f", intake);
         telemetry.addData("elevator", "%.2f", elevator);
         telemetry.addData("kicker",   "%.2f", kicker);
-    }
-
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
     }
 }
