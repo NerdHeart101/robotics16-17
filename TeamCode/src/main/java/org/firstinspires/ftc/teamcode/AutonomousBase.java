@@ -210,9 +210,6 @@ public class AutonomousBase extends LinearOpMode {
     // The following methods are all created in order to further increase readability.
     // And to reduce keystrokes. Efficiency, yo!
 
-    // A method to have the bot move in a circular path to a target.
-    // It can perform the job of both the driveStraight and rotateInPlace methods.
-    // Whether it is advantageous to do so is yet to be found out
     public void moveToTarget(double distanceToTarget, double degreesToTarget) {
 
         degreesToTarget += 5; // 5 degrees are added to account for errors in the encoders
@@ -230,16 +227,17 @@ public class AutonomousBase extends LinearOpMode {
 
         double moveTimeout = Math.max(Math.abs(leftArc),Math.abs(rightArc)) * DRIVE_SPEED * 2;
 
+        // Use the encoderDrive method to perform the move
         encoderDrive(DRIVE_SPEED, leftArc, rightArc, moveTimeout);
-
     }
 
     // A method to move the bot straight forward.
     public void driveStraight(double inches) {
 
         double straightTimeout = Math.abs(inches) / 8.0;
-        encoderDrive(DRIVE_SPEED, inches, inches, straightTimeout);
 
+        // Use the encoderDrive method to perform the move
+        encoderDrive(DRIVE_SPEED, inches, inches, straightTimeout);
     }
 
     // A method to rotate the bot in place.
@@ -252,7 +250,8 @@ public class AutonomousBase extends LinearOpMode {
         double leftArc = -arc;
         double rightArc = arc;
         double rotateTimeout = Math.abs(arc)*TURN_SPEED*2;
-        encoderDrive(TURN_SPEED, leftArc, rightArc, rotateTimeout);
 
+        // Use the encoderDrive method to perform the move
+        encoderDrive(TURN_SPEED, leftArc, rightArc, rotateTimeout);
     }
 }

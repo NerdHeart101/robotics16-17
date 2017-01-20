@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Mecanum Drive (Competition)", group="Compbot")
 @Disabled
-public class CompbotMecanumDrive extends OpMode {
+public class CompbotMecanum extends OpMode {
 
     // Access the robot
     HardwareCompbot robot = new HardwareCompbot();
@@ -40,8 +40,8 @@ public class CompbotMecanumDrive extends OpMode {
         // Driver 1 - Driving and intake
 
         // Run wheels in mecano mode
-        // TODO: add commands (maybe a method?) to control the wheels
         // Left stick for rotation, right for movement
+        // TODO: add commands (maybe a method?) to control the wheels
 
         // Intake - A or right trigger for intake, B or right bumper for
         intake = !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER;
@@ -57,12 +57,12 @@ public class CompbotMecanumDrive extends OpMode {
                 : gamepad2.right_bumper ? -KICKER_POWER : 0.0;
 
         // Set power of all motors to the correct value
-        // TODO: add commands (maybe a method?) to control the wheels
+
         robot.intakeMotor.setPower(intake);
         robot.elevatorMotor.setPower(elevator);
         robot.kickerMotor.setPower(kicker);
 
-        // Send telemetry message to signify robot running;
+        // Send telemetry message to signify robot running
         // TODO: add degree indicator for bot movement and rotation
         telemetry.addData("intake",   "%.2f", intake);
         telemetry.addData("elevator", "%.2f", elevator);

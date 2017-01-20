@@ -35,13 +35,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="Launcher Test", group="Compbot")
+@Autonomous(name="Autonomous Test", group="Compbot")
 
 public class AutonomousTester extends AutonomousBase {
 
     @Override
     public void runOpMode() {
 
+        // TODO: make the nextBall method more precise
         initializeAutonomous();
 
         launchBall();

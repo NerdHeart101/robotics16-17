@@ -42,6 +42,7 @@ public class BallCornerVortex_Red extends AutonomousBase {
     @Override
     public void runOpMode() {
 
+        // TODO: rework using moveToTarget
         initializeAutonomous();
 
         // Step through each leg of the path

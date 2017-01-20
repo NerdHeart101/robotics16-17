@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class HardwareCompbot
-{
+public class HardwareCompbot {
+
     /* Public OpMode members. */
     public DcMotor  leftMotor       = null;
     public DcMotor  rightMotor      = null;
