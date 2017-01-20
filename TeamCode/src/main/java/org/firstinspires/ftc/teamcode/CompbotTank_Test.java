@@ -36,12 +36,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
- * This code is to drive the competition bot using two drivers controlling different aspects of the bot
+ * This code is to drive the competition bot using either one or two drivers
+ * Each of the drivers controls all aspects of the bot
+ * If two inputs for the same motor are received, the player normally with that control takes priority
  */
 
-@TeleOp(name="Teleop Tank (Competition)", group="Compbot")
+@TeleOp(name="Teleop Tank (Testing)", group="Compbot")
 
-public class CompbotTankComp extends OpMode{
+public class CompbotTank_Test extends OpMode{
 
     // Access the robot
     HardwareCompbot robot   = new HardwareCompbot();
@@ -54,36 +56,88 @@ public class CompbotTankComp extends OpMode{
 
     @Override
     public void init() {
-
-        // Initialize the robot
+        /* Initialize the hardware variables.
+         * The init() method of the hardware class does all the work here
+         */
         robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Drivers");    //
+        telemetry.addData("Say", "Hello Driver");    //
     }
 
+    /*
+     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
+     */
+    @Override
+    public void init_loop() {
+    }
+
+    /*
+     * Code to run ONCE when the driver hits PLAY
+     */
+    @Override
+    public void start() {
+    }
+
+    /*
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+     */
     @Override
     public void loop() {
-        double left,right,intake,elevator,kicker;
+        double left,leftPrimary,leftSecondary;
+        double right,rightPrimary,rightSecondary;
+        double intake,intakePrimary,intakeSecondary;
+        double elevator,elevatorPrimary,elevatorSecondary;
+        double kicker,kickerPrimary,kickerSecondary;
 
         // Driver 1 - Driving and intake
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = gamepad1.left_stick_y * DRIVE_POWER;
-        right = gamepad1.right_stick_y * DRIVE_POWER;
+        leftPrimary = gamepad1.left_stick_y * DRIVE_POWER;
+        rightPrimary = gamepad1.right_stick_y * DRIVE_POWER;
 
-        // Intake - A or right trigger for intake, B or right bumper for
-        intake = !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER;
+        // Intake - A or right trigger for intake, B or right bumper for output
+        // If allowAlternateControls is true, then RT and RB are not available, so adjust.
+        // Holy nested if-else Batman!
+        intakePrimary = gamepad1.a ? INTAKE_POWER : gamepad1.b ? -INTAKE_POWER : 0.0;
 
         // Driver 2 - Elevator and kicker
 
         // Elevator - Left trigger for forward, left bumper for reverse
-        elevator = (gamepad2.left_trigger != 0) ? (gamepad2.left_trigger * ELEVATOR_POWER)
+        elevatorPrimary = (gamepad2.left_trigger != 0) ? (gamepad2.left_trigger * ELEVATOR_POWER)
                 : gamepad2.left_bumper ? -ELEVATOR_POWER : 0.0;
 
         // Kicker - Right trigger for forward, right bumper for reverse
-        kicker = gamepad2.right_trigger != 0 ? gamepad2.right_trigger * KICKER_POWER
+        kickerPrimary = gamepad2.right_trigger != 0 ? gamepad2.right_trigger * KICKER_POWER
                 : gamepad2.right_bumper ? -KICKER_POWER : 0.0;
+
+
+        // Alternate controls allow for each driver to perform actions delegated to the other
+        // Driver 1 Alternate - Elevator and kicker
+
+        // Elevator - Left trigger for forward, left bumper for reverse
+        elevatorSecondary = gamepad1.left_trigger != 0 ? gamepad1.left_trigger * ELEVATOR_POWER
+                    : gamepad1.left_bumper ? -ELEVATOR_POWER : 0.0;
+
+        // Kicker - Right trigger for forward, right bumper for reverse
+        kickerSecondary = gamepad1.right_trigger != 0 ? gamepad1.right_trigger * KICKER_POWER
+                    : gamepad1.right_bumper ? -KICKER_POWER : 0.0;
+
+        // Driver 2 Alternate - Driving and intake
+
+        // Run wheels in tank mode
+        leftSecondary = gamepad2.left_stick_y;
+        rightSecondary = gamepad2.right_stick_y;
+
+        // Intake - A for intake, B button for output (Note that trigger controls are not applied)
+        intakeSecondary = gamepad2.a ? INTAKE_POWER : gamepad2.b ? -INTAKE_POWER : 0.0;
+
+        // Resolve conflicts of primary and alternate controls
+        left = leftPrimary != 0 ? leftPrimary : leftSecondary;
+        right = rightPrimary != 0 ? rightPrimary : rightSecondary;
+        intake = intakePrimary != 0 ? intakePrimary : intakeSecondary;
+        elevator = elevatorPrimary != 0 ? elevatorPrimary : elevatorSecondary;
+        kicker = kickerPrimary != 0 ? kickerPrimary : kickerSecondary;
 
         // Set power of all motors to the correct value
         robot.leftMotor.setPower(left);
@@ -98,5 +152,12 @@ public class CompbotTankComp extends OpMode{
         telemetry.addData("intake",   "%.2f", intake);
         telemetry.addData("elevator", "%.2f", elevator);
         telemetry.addData("kicker",   "%.2f", kicker);
+    }
+
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
     }
 }

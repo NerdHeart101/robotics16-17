@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name="RED: Ball + Corner Vortex", group="Compbot")
 
-public class RedBallCornerVortex extends AutonomousBase {
+public class BallCornerVortex_Red extends AutonomousBase {
 
     @Override
     public void runOpMode() {
