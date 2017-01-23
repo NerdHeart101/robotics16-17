@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 /**
  * Created by Maint on 12/14/2016.
  */
-@Autonomous(name = "Sensor: MR Color", group = "Sensor")
+//@Autonomous(name = "Sensor: MR Color", group = "Sensor")
 public class PushbotAutoBeacon extends LinearOpMode {
 
     ColorSensor colorSensor;    // Hardware Device Object
@@ -73,7 +73,6 @@ public class PushbotAutoBeacon extends LinearOpMode {
             telemetry.addData("Green", colorSensor.green());
             telemetry.addData("Blue ", colorSensor.blue());
             telemetry.addData("Hue", hsvValues[0]);
-            // huehuehue
 
             // change the background color to match the color detected by the RGB sensor.
             // pass a reference to the hue, saturation, and value array as an argument
