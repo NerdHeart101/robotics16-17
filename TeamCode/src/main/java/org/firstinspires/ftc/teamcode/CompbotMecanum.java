@@ -8,12 +8,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Created by jonathon on 1/19/17.
  */
 
-@TeleOp(name="Mecanum Drive (Competition)", group="Compbot")
-@Disabled
+@TeleOp(name="Analog Stick Test", group="Compbot")
+
 public class CompbotMecanum extends OpMode {
 
     // Access the robot
-    HardwareCompbot robot = new HardwareCompbot();
+    // HardwareCompbot robot = new HardwareCompbot();
 
     // Powers (speeds) for each motor
     final double DRIVE_POWER    = 0.6;
@@ -25,7 +25,7 @@ public class CompbotMecanum extends OpMode {
     public void init() {
 
         // Initialize the robot
-        robot.init(hardwareMap);
+        // robot.init(hardwareMap);
 
         // Notify the drivers
         telemetry.addData("Say","Hello Drivers");
@@ -33,6 +33,11 @@ public class CompbotMecanum extends OpMode {
 
     public void loop() {
 
+        telemetry.addData("Left Stick","%d x : %d y",gamepad1.left_stick_x,gamepad1.left_stick_y);
+        telemetry.addData("Right Stick","%d x : %d y",gamepad1.right_stick_x,gamepad1.right_stick_y);
+        telemetry.update();
+
+        /*
         // Current speeds of the motors
         double frontLeft,backLeft,frontRight,backRight;
         double intake,elevator,kicker;
@@ -67,5 +72,6 @@ public class CompbotMecanum extends OpMode {
         telemetry.addData("intake",   "%.2f", intake);
         telemetry.addData("elevator", "%.2f", elevator);
         telemetry.addData("kicker",   "%.2f", kicker);
+        */
     }
 }
