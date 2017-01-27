@@ -25,8 +25,8 @@ public class AutonomousBase extends LinearOpMode {
     HardwareCompbot robot   = new HardwareCompbot();
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440  ;   // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0   ;   // This is < 1.0 if geared UP
+    static final double     COUNTS_PER_MOTOR_REV    = 144  ;   // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 20.0   ;   // This is < 1.0 if geared UP
 
 
     // Competition bot

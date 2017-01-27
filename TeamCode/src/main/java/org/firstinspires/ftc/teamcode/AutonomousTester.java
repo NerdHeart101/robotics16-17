@@ -49,6 +49,10 @@ public class AutonomousTester extends AutonomousBase {
         nextBall();
         launchBall();
 
+        encoderDrive(DRIVE_SPEED,20,20,1.7);
+        encoderDrive(TURN_SPEED,20,-20,2);
+        encoderDrive(DRIVE_SPEED,-6,-6,0.4);
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
