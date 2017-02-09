@@ -36,6 +36,7 @@ public class HardwareCompbot {
         kickerMotor     = hwMap.dcMotor.get("kicker");
         intakeMotor     = hwMap.dcMotor.get("intake");
 
+
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 

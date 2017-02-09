@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * Created by Maint on 2/7/2017.
  */
 @Autonomous(name="Autonomous Main with Sensors", group="Compbot")
-public class MainAuto extends AutonomousBase {
+public class MainAutoRed extends AutonomousBase {
 
     @Override
     public void runOpMode() {
@@ -15,6 +15,7 @@ public class MainAuto extends AutonomousBase {
         launchBall();
         nextBall();
         launchBall();
+
 
 
 
