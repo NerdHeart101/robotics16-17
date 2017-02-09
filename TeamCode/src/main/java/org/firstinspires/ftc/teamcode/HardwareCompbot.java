@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,6 +17,10 @@ public class HardwareCompbot {
     public DcMotor  elevatorMotor   = null;
     public DcMotor  kickerMotor     = null;
     public DcMotor  intakeMotor     = null;
+
+    ModernRoboticsI2cRangeSensor rangeSensor;
+    ColorSensor colorSensor;
+    OpticalDistanceSensor odsSensor;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -35,6 +42,10 @@ public class HardwareCompbot {
         elevatorMotor   = hwMap.dcMotor.get("elevator");
         kickerMotor     = hwMap.dcMotor.get("kicker");
         intakeMotor     = hwMap.dcMotor.get("intake");
+
+        colorSensor = hwMap.colorSensor.get("sensor_color");
+        odsSensor = hwMap.opticalDistanceSensor.get("sensor_ods");
+        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
 
 
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
