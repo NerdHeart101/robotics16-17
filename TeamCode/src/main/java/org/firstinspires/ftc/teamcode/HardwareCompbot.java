@@ -24,8 +24,6 @@ public class HardwareCompbot {
     public ColorSensor                  colorSensor = null;
     public OpticalDistanceSensor        odsSensor   = null;
 
-    private static final double MID_SERVO = .5;
-
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -60,8 +58,6 @@ public class HardwareCompbot {
 
         elevatorMotor.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        buttonPusher.setPosition(MID_SERVO);
 
         // Set all motors to zero power
         leftMotor.setPower(0);

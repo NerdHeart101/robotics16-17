@@ -201,6 +201,11 @@ public class AutonomousBase extends LinearOpMode {
         }
     }
 
+    public void buttonPush(boolean pushing) {
+        double position = pushing ? .4 : 1.0;
+        robot.buttonPusher.setPosition(position);
+    }
+
     // Wait for a specified number of seconds
     public void waitTime(int seconds) {
         runtime.reset();

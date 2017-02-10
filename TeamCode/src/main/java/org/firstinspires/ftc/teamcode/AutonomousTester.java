@@ -45,6 +45,7 @@ public class AutonomousTester extends AutonomousBase {
         // TODO: make the nextBall method more precise
         initializeAutonomous();
 
+        /*
         launchBall();
         nextBall();
         launchBall();
@@ -52,6 +53,11 @@ public class AutonomousTester extends AutonomousBase {
         encoderDrive(DRIVE_SPEED,20,20,1.7);
         encoderDrive(TURN_SPEED,20,-20,2);
         encoderDrive(DRIVE_SPEED,-6,-6,0.4);
+        */
+        for(int i = 0;i<10;i++) {
+            buttonPush(i%2==0);
+            waitTime(1);
+        }
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
