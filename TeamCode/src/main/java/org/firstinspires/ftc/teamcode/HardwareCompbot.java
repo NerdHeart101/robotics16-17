@@ -18,9 +18,13 @@ public class HardwareCompbot {
     public DcMotor  kickerMotor     = null;
     public DcMotor  intakeMotor     = null;
 
-    ModernRoboticsI2cRangeSensor rangeSensor;
-    ColorSensor colorSensor;
-    OpticalDistanceSensor odsSensor;
+    public Servo    buttonPusher    = null;
+
+    public ModernRoboticsI2cRangeSensor rangeSensor = null;
+    public ColorSensor                  colorSensor = null;
+    public OpticalDistanceSensor        odsSensor   = null;
+
+    private static final double MID_SERVO = .5;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -43,16 +47,21 @@ public class HardwareCompbot {
         kickerMotor     = hwMap.dcMotor.get("kicker");
         intakeMotor     = hwMap.dcMotor.get("intake");
 
-        colorSensor = hwMap.colorSensor.get("sensor_color");
-        odsSensor = hwMap.opticalDistanceSensor.get("sensor_ods");
-        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
-
+        // Define and Initialize Servos
+        buttonPusher    = hwMap.servo.get("button_pusher");
+        
+        // Define and Initialize Sensors
+        colorSensor     = hwMap.colorSensor.get("sensor_color");
+        odsSensor       = hwMap.opticalDistanceSensor.get("sensor_ods");
+        rangeSensor     = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
 
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         elevatorMotor.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        buttonPusher.setPosition(MID_SERVO);
 
         // Set all motors to zero power
         leftMotor.setPower(0);

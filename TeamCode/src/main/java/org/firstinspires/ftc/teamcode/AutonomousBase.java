@@ -120,13 +120,16 @@ public class AutonomousBase extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
 
+            /*
             double leftRatio = Math.abs(leftInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
             double rightRatio = Math.abs(rightInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
             double leftSpeed = Math.abs(speed) * leftRatio;
             double rightSpeed = Math.abs(speed) * rightRatio;
             robot.leftMotor.setPower(leftSpeed);
             robot.rightMotor.setPower(rightSpeed);
-
+            */
+            robot.leftMotor.setPower(Math.abs(speed));
+            robot.rightMotor.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
