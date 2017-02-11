@@ -54,10 +54,24 @@ public class AutonomousTester extends AutonomousBase {
         encoderDrive(TURN_SPEED,20,-20,2);
         encoderDrive(DRIVE_SPEED,-6,-6,0.4);
         */
-        for(int i = 0;i<10;i++) {
-            buttonPush(i%2==0);
-            waitTime(1);
-        }
+        // Move forward a bit
+        encoderDrive(DRIVE_SPEED,1,1,.5);
+        // Launch the balls
+        launchBall();
+        nextBall();
+        launchBall();
+
+        // Get in position
+
+        encoderDrive(TURN_SPEED,6,-6,.9);
+        encoderDrive(DRIVE_SPEED,1,1,.5);
+        encoderDrive(TURN_SPEED,-6,6,.9);
+
+        // Do beacon stuff
+        driveToLine();
+        encoderDrive(TURN_SPEED,6,-6,.9);
+
+        pushButton(true);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
