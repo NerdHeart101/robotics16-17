@@ -328,4 +328,18 @@ public class AutonomousBase extends LinearOpMode {
         // Use the encoderDrive method to perform the move
         encoderDrive(TURN_SPEED, leftArc, rightArc, rotateTimeout);
     }
+
+    public void moveToLine() {
+
+        while(robot.odsSensor.getRawLightDetected() < 1) {
+            robot.leftMotor.setPower(Math.abs(DRIVE_SPEED));
+            robot.rightMotor.setPower(Math.abs(DRIVE_SPEED));
+
+            telemetry.addData("Raw",    robot.odsSensor.getRawLightDetected());
+            telemetry.update();
+
+        }
+
+    }
+
 }
