@@ -194,7 +194,7 @@ public class AutonomousBase extends LinearOpMode {
         runtime.reset();
         if(opModeIsActive()) {
             robot.elevatorMotor.setPower(ELEVATOR_POWER);
-            while (runtime.milliseconds() < 580) {
+            while (runtime.milliseconds() < 1500) {
                 telemetry.addData("Elevator", "Getting next ball");
                 telemetry.update();
             }

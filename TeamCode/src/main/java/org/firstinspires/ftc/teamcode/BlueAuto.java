@@ -35,15 +35,28 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="Autonomous Test", group="Compbot")
+@Autonomous(name="BLUE: regional", group="Compbot")
 
-public class AutonomousTester extends AutonomousBase {
+public class BlueAuto extends AutonomousBase {
 
     @Override
     public void runOpMode() {
 
         // TODO: make the nextBall method more precise
+        initializeAutonomous();
 
+        encoderDrive(DRIVE_SPEED, 1, 1, 0.8);
+
+        launchBall();
+        nextBall();
+        launchBall();
+
+        encoderDrive(DRIVE_SPEED,20,20,0.6);
+        encoderDrive(TURN_SPEED / 2,-20,20,1.5);
+        encoderDrive(TURN_SPEED,20,-20,1.6);
+        encoderDrive(DRIVE_SPEED,6,6,1.2);
+
+        /*
         // Move forward a bit
         encoderDrive(DRIVE_SPEED, 1, 1, .5);
         // Launch the balls
@@ -63,10 +76,10 @@ public class AutonomousTester extends AutonomousBase {
         driveToLine();
         encoderDrive(TURN_SPEED,6,-6,.9);
 
-        pushButton(true);
+        //pushButton(true);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
-
+        */
     }
 }
