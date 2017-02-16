@@ -120,21 +120,22 @@ public class AutonomousBase extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
 
-            /*
+
             double leftRatio = Math.abs(leftInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
             double rightRatio = Math.abs(rightInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
             double leftSpeed = Math.abs(speed) * leftRatio;
             double rightSpeed = Math.abs(speed) * rightRatio;
             robot.leftMotor.setPower(leftSpeed);
             robot.rightMotor.setPower(rightSpeed);
-            */
+
+            /*
             robot.leftMotor.setPower(Math.abs(speed));
             robot.rightMotor.setPower(Math.abs(speed));
-
+             */
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+                    (robot.leftMotor.isBusy() || robot.rightMotor.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
@@ -193,7 +194,7 @@ public class AutonomousBase extends LinearOpMode {
         runtime.reset();
         if(opModeIsActive()) {
             robot.elevatorMotor.setPower(ELEVATOR_POWER);
-            while (runtime.milliseconds() < 580) {
+            while (runtime.milliseconds() < 1500) {
                 telemetry.addData("Elevator", "Getting next ball");
                 telemetry.update();
             }
@@ -201,9 +202,74 @@ public class AutonomousBase extends LinearOpMode {
         }
     }
 
-    public void buttonPush(boolean pushing) {
+    public void buttonPusher(boolean pushing) {
         double position = pushing ? .4 : 1.0;
         robot.buttonPusher.setPosition(position);
+    }
+
+    public void pushButton(boolean red) {
+        // Adjust robot to get 30 units using the ultrasonic sensor
+
+        boolean correctColor = false;
+        do {
+            int distance = robot.rangeSensor.rawUltrasonic();
+            if (distance > 35) {
+                robot.leftMotor.setPower(0.05);
+                robot.rightMotor.setPower(0.05);
+                while (robot.rangeSensor.rawUltrasonic() > 31) {
+                }
+                robot.leftMotor.setPower(0.0);
+                robot.rightMotor.setPower(0.0);
+            } else if (distance < 25) {
+                robot.leftMotor.setPower(-0.05);
+                robot.rightMotor.setPower(-0.05);
+                while (robot.rangeSensor.rawUltrasonic() < 28) {
+                }
+                robot.leftMotor.setPower(0.0);
+                robot.rightMotor.setPower(0.0);
+            }
+            // Push the button
+            buttonPusher(true);
+            encoderDrive(.05, 1, 1, 1.5);
+            encoderDrive(.05, -1, -1, 1.5);
+            buttonPusher(false);
+            // Get close enough to sense color
+            robot.leftMotor.setPower(0.01);
+            robot.rightMotor.setPower(0.01);
+            while (robot.rangeSensor.rawUltrasonic() > 10) {}
+            robot.leftMotor.setPower(0.0);
+            robot.rightMotor.setPower(0.0);
+            // Sense color
+            // Red
+            if(red) {
+                if (robot.colorSensor.red() > robot.colorSensor.blue()) {
+                    correctColor = true;
+                }
+            } else {
+                if (robot.colorSensor.blue() > robot.colorSensor.red()) {
+                    correctColor = true;
+                }
+            }
+        } while(correctColor == false);
+        // Move back a bit
+        encoderDrive(.1, -1, -1, 1);
+    }
+
+    public void driveToLine() {
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        robot.leftMotor.setPower(.1);
+        robot.rightMotor.setPower(.1);
+
+        while(robot.odsSensor.getRawLightDetected() < 1) {
+            telemetry.addData("Robot","Moving to white line");
+            telemetry.update();
+        }
+
+        robot.leftMotor.setPower(0.0);
+        robot.rightMotor.setPower(0.0);
+
     }
 
     // Wait for a specified number of seconds
