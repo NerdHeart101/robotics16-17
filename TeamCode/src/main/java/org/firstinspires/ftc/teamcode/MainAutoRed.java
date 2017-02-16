@@ -8,6 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous(name="Autonomous Main with Sensors", group="Compbot")
 public class MainAutoRed extends AutonomousBase {
 
+    HardwareCompbot robot = new HardwareCompbot();
+    public static final int ANDYMARK_TICKS_PER_REVOLUTION = 1120;
+
+
     @Override
     public void runOpMode() {
 
@@ -15,6 +19,7 @@ public class MainAutoRed extends AutonomousBase {
         launchBall();
         nextBall();
         launchBall();
+
 
 
 
