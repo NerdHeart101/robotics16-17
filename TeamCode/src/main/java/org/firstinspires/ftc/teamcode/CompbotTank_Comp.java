@@ -70,8 +70,8 @@ public class CompbotTank_Comp extends OpMode{
         // Driver 1 - Driving, intake, and button pusher
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = gamepad1.left_stick_y * DRIVE_POWER;
-        right = gamepad1.right_stick_y * DRIVE_POWER;
+        left = -gamepad1.left_stick_y * DRIVE_POWER;
+        right = -gamepad1.right_stick_y * DRIVE_POWER;
 
         // Intake - A or right trigger for intake, B or right bumper for
         intake = !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER;

@@ -25,19 +25,13 @@ public class AutonomousBase extends LinearOpMode {
     HardwareCompbot robot   = new HardwareCompbot();
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 144  ;   // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 20.0   ;   // This is < 1.0 if geared UP
+    static final double     COUNTS_PER_MOTOR_REV    = 28  ;   // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 80  ;   // This is < 1.0 if geared UP
 
 
     // Competition bot
     static final double     WHEEL_DIAMETER_INCHES   = 6.0   ;   // For figuring circumference
-    static final double     DISTANCE_BETWEEN_WHEELS = 16.0  ;   // For figuring bot rotations
-
-    /*
-    // Pushbot
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0   ;   // For figuring circumference
-    static final double     DISTANCE_BETWEEN_WHEELS = 14.625;   // For figuring bot rotations
-     */
+    static final double     DISTANCE_BETWEEN_WHEELS = 15.5  ;   // For figuring bot rotations
 
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION)
                                                       / (WHEEL_DIAMETER_INCHES * Math.PI);
@@ -104,6 +98,9 @@ public class AutonomousBase extends LinearOpMode {
         int newLeftTarget;
         int newRightTarget;
 
+        leftInches--;
+        rightInches--;
+
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
@@ -135,7 +132,7 @@ public class AutonomousBase extends LinearOpMode {
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (robot.leftMotor.isBusy() || robot.rightMotor.isBusy())) {
+                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
@@ -161,7 +158,7 @@ public class AutonomousBase extends LinearOpMode {
     public void launchBall() {
 
         int newKickerTarget;
-        double timeoutS = 33.0 / 34.0;
+        double timeoutS = 33 / 34;
 
         // Make sure opmode is still active
         if(opModeIsActive()) {

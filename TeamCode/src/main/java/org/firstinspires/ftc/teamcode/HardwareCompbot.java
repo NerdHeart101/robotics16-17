@@ -53,8 +53,8 @@ public class HardwareCompbot {
         odsSensor       = hwMap.opticalDistanceSensor.get("sensor_ods");
         rangeSensor     = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
 
-        leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        rightMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
         elevatorMotor.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);
