@@ -157,26 +157,17 @@ public class AutonomousBase extends LinearOpMode {
     // A method in order to use the kicker to launch a ball.
     public void launchBall() {
 
-        int newKickerTarget;
-        double timeoutS = 33 / 34;
+        double timeoutS = 1;
 
         // Make sure opmode is still active
         if(opModeIsActive()) {
 
-            // Get the kicker's position and set the target one position ahead
-            newKickerTarget = robot.kickerMotor.getCurrentPosition() + (int)COUNTS_PER_MOTOR_REV;
-            robot.kickerMotor.setTargetPosition(newKickerTarget);
-
-            // Set the motor mode and start the motor moving
-            robot.kickerMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             runtime.reset();
             robot.kickerMotor.setPower(1);
 
-            while(opModeIsActive() && robot.kickerMotor.isBusy()
-                    && runtime.seconds() < timeoutS) {
+            while(opModeIsActive() && runtime.seconds() < timeoutS) {
 
-                telemetry.addData("Path1", "Kicker running to %7d", newKickerTarget);
-                telemetry.addData("Path2", "Kicker at %7d", robot.kickerMotor.getCurrentPosition());
+                telemetry.addData("Kicker","Kicking Ball");
                 telemetry.update();
             }
 
@@ -211,15 +202,15 @@ public class AutonomousBase extends LinearOpMode {
         do {
             int distance = robot.rangeSensor.rawUltrasonic();
             if (distance > 35) {
-                robot.leftMotor.setPower(0.05);
-                robot.rightMotor.setPower(0.05);
+                robot.leftMotor.setPower(-0.05);
+                robot.rightMotor.setPower(-0.05);
                 while (robot.rangeSensor.rawUltrasonic() > 31) {
                 }
                 robot.leftMotor.setPower(0.0);
                 robot.rightMotor.setPower(0.0);
             } else if (distance < 25) {
-                robot.leftMotor.setPower(-0.05);
-                robot.rightMotor.setPower(-0.05);
+                robot.leftMotor.setPower(0.05);
+                robot.rightMotor.setPower(0.05);
                 while (robot.rangeSensor.rawUltrasonic() < 28) {
                 }
                 robot.leftMotor.setPower(0.0);
@@ -227,12 +218,12 @@ public class AutonomousBase extends LinearOpMode {
             }
             // Push the button
             buttonPusher(true);
-            encoderDrive(.05, 1, 1, 1.5);
-            encoderDrive(.05, -1, -1, 1.5);
+            encoderDrive(.05, -10, -10, 1.5);
+            encoderDrive(.05, 10, 10, 1.5);
             buttonPusher(false);
             // Get close enough to sense color
-            robot.leftMotor.setPower(0.01);
-            robot.rightMotor.setPower(0.01);
+            robot.leftMotor.setPower(-0.01);
+            robot.rightMotor.setPower(-0.01);
             while (robot.rangeSensor.rawUltrasonic() > 10) {}
             robot.leftMotor.setPower(0.0);
             robot.rightMotor.setPower(0.0);
@@ -249,15 +240,15 @@ public class AutonomousBase extends LinearOpMode {
             }
         } while(correctColor == false);
         // Move back a bit
-        encoderDrive(.1, -1, -1, 1);
+        encoderDrive(.1, 5, 5, 1);
     }
 
     public void driveToLine() {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        robot.leftMotor.setPower(.1);
-        robot.rightMotor.setPower(.1);
+        robot.rightMotor.setPower(-0.1);
+        robot.leftMotor.setPower(-.8);
 
         while(robot.odsSensor.getRawLightDetected() < 1) {
             telemetry.addData("Robot","Moving to white line");

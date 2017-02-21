@@ -45,7 +45,7 @@ public class AutonomousTester extends AutonomousBase {
         initializeAutonomous();
 
         // Move forward a bit
-        driveStraight(-8);
+        encoderDrive(DRIVE_SPEED,-8,-8,2);
         // Launch the balls
 
         launchBall();
@@ -53,8 +53,13 @@ public class AutonomousTester extends AutonomousBase {
         launchBall();
 
         // Get in position
+        rotateInPlace(30);
+        encoderDrive(DRIVE_SPEED,-64,-64,10);
+        rotateInPlace(-40);
 
         // Do beacon stuff
+        driveToLine();
+        pushButton(true);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
