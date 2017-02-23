@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class MainAutoRed extends AutonomousBase {
 
     HardwareCompbot robot = new HardwareCompbot();
-    public static final int ANDYMARK_TICKS_PER_REVOLUTION = 1120;
+
 
 
     @Override

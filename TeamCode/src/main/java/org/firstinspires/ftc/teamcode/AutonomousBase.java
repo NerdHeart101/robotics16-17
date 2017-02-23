@@ -37,8 +37,8 @@ public class AutonomousBase extends LinearOpMode {
                                                       / (WHEEL_DIAMETER_INCHES * Math.PI);
     static final double     DRIVE_SPEED             = 0.7   ;
     static final double     TURN_SPEED              = 0.5   ;
-    static final double     ELEVATOR_POWER          = 1     ;
-    static final double     KICKER_POWER            = 1     ;
+
+
 
     @Override
     public void runOpMode() {
@@ -98,15 +98,12 @@ public class AutonomousBase extends LinearOpMode {
         int newLeftTarget;
         int newRightTarget;
 
-        leftInches--;
-        rightInches--;
-
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.leftMotor.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newRightTarget = robot.rightMotor.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
+            newLeftTarget = robot.leftMotor.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = robot.rightMotor.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
             robot.leftMotor.setTargetPosition(newLeftTarget);
             robot.rightMotor.setTargetPosition(newRightTarget);
 
@@ -116,33 +113,23 @@ public class AutonomousBase extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-
-
-            double leftRatio = Math.abs(leftInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
-            double rightRatio = Math.abs(rightInches) / Math.max(Math.abs(leftInches),Math.abs(rightInches));
-            double leftSpeed = Math.abs(speed) * leftRatio;
-            double rightSpeed = Math.abs(speed) * rightRatio;
-            robot.leftMotor.setPower(leftSpeed);
-            robot.rightMotor.setPower(rightSpeed);
-
-            /*
             robot.leftMotor.setPower(Math.abs(speed));
             robot.rightMotor.setPower(Math.abs(speed));
-             */
+
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d",
+                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
+                telemetry.addData("Path2",  "Running at %7d :%7d",
                         robot.leftMotor.getCurrentPosition(),
                         robot.rightMotor.getCurrentPosition());
                 telemetry.update();
             }
 
-            // Stop all motion
+            // Stop all motion;
             robot.leftMotor.setPower(0);
             robot.rightMotor.setPower(0);
 
@@ -157,7 +144,7 @@ public class AutonomousBase extends LinearOpMode {
     // A method in order to use the kicker to launch a ball.
     public void launchBall() {
 
-        double timeoutS = 1;
+        double timeoutS = .75;
 
         // Make sure opmode is still active
         if(opModeIsActive()) {
@@ -181,7 +168,7 @@ public class AutonomousBase extends LinearOpMode {
     public void nextBall() {
         runtime.reset();
         if(opModeIsActive()) {
-            robot.elevatorMotor.setPower(ELEVATOR_POWER);
+            robot.elevatorMotor.setPower(1);
             while (runtime.milliseconds() < 1500) {
                 telemetry.addData("Elevator", "Getting next ball");
                 telemetry.update();
@@ -248,7 +235,7 @@ public class AutonomousBase extends LinearOpMode {
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         robot.rightMotor.setPower(-0.1);
-        robot.leftMotor.setPower(-.8);
+        robot.leftMotor.setPower(-0.1);
 
         while(robot.odsSensor.getRawLightDetected() < 1) {
             telemetry.addData("Robot","Moving to white line");
