@@ -35,7 +35,7 @@ public class AutonomousBase extends LinearOpMode {
 
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION)
                                                       / (WHEEL_DIAMETER_INCHES * Math.PI);
-    static final double     DRIVE_SPEED             = 0.7   ;
+    static final double     DRIVE_SPEED             = 0.4   ;
     static final double     TURN_SPEED              = 0.5   ;
 
 
@@ -141,7 +141,9 @@ public class AutonomousBase extends LinearOpMode {
         }
     }
 
-    // A method in order to use the kicker to launch a ball.
+    /**
+     *
+     */
     public void launchBall() {
 
         double timeoutS = .75;
@@ -189,15 +191,15 @@ public class AutonomousBase extends LinearOpMode {
         do {
             int distance = robot.rangeSensor.rawUltrasonic();
             if (distance > 35) {
-                robot.leftMotor.setPower(-0.05);
-                robot.rightMotor.setPower(-0.05);
+                robot.leftMotor.setPower(-0.2);
+                robot.rightMotor.setPower(-0.2);
                 while (robot.rangeSensor.rawUltrasonic() > 31) {
                 }
                 robot.leftMotor.setPower(0.0);
                 robot.rightMotor.setPower(0.0);
             } else if (distance < 25) {
-                robot.leftMotor.setPower(0.05);
-                robot.rightMotor.setPower(0.05);
+                robot.leftMotor.setPower(0.2);
+                robot.rightMotor.setPower(0.2);
                 while (robot.rangeSensor.rawUltrasonic() < 28) {
                 }
                 robot.leftMotor.setPower(0.0);
@@ -225,7 +227,7 @@ public class AutonomousBase extends LinearOpMode {
                     correctColor = true;
                 }
             }
-        } while(correctColor == false);
+        } while(!correctColor);
         // Move back a bit
         encoderDrive(.1, 5, 5, 1);
     }
