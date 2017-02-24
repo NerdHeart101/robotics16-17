@@ -42,27 +42,10 @@ public class AutonomousTester extends AutonomousBase {
     @Override
     public void runOpMode() {
 
-        initializeAutonomous();
+        buttonPusher(true);
+        buttonPusher(false);
 
-        // Move forward a bit
-        encoderDrive(DRIVE_SPEED,-8,-8,2);
-        // Launch the balls
-
-        launchBall();
-        nextBall();
-        launchBall();
-
-        // Get in position
-        rotateInPlace(30);
-        encoderDrive(DRIVE_SPEED,-64,-64,10);
-        rotateInPlace(-40);
-
-        // Do beacon stuff
-        driveToLine();
         pushButton(true);
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
 
     }
 }

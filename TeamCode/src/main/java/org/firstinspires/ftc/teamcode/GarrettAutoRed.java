@@ -10,18 +10,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 public class GarrettAutoRed extends AutonomousBase {
 
-    public static boolean isPushing = true;;
+    public static boolean isPushing = true;
 
     @Override
     public void runOpMode() {
 
+        /*
         initializeAutonomous();
 
         encoderDrive(DRIVE_SPEED, -8, -8, 2);
-       /* launchBall();
+        launchBall();
         nextBall();
         launchBall();
-        */
+
 
         encoderDrive(TURN_SPEED, -4.3, 4.3, 2.0);
 
@@ -35,7 +36,7 @@ public class GarrettAutoRed extends AutonomousBase {
         }
 
         encoderDrive(TURN_SPEED, -5.8, 5.8, 2.0);
-
+        */
         pushButton(true);
 
 
@@ -45,3 +46,5 @@ public class GarrettAutoRed extends AutonomousBase {
 
     }
 }
+
+

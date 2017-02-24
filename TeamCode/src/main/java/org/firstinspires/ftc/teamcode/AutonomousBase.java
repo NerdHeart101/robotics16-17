@@ -189,23 +189,6 @@ public class AutonomousBase extends LinearOpMode {
 
         boolean correctColor = false;
         do {
-            int distance = robot.rangeSensor.rawUltrasonic();
-            if (distance > 35) {
-                robot.leftMotor.setPower(-0.2);
-                robot.rightMotor.setPower(-0.2);
-                while (robot.rangeSensor.rawUltrasonic() > 31) {
-                }
-                robot.leftMotor.setPower(0.0);
-                robot.rightMotor.setPower(0.0);
-            } else if (distance < 25) {
-                robot.leftMotor.setPower(0.2);
-                robot.rightMotor.setPower(0.2);
-                while (robot.rangeSensor.rawUltrasonic() < 28) {
-                }
-                robot.leftMotor.setPower(0.0);
-                robot.rightMotor.setPower(0.0);
-            }
-            // Push the button
             buttonPusher(true);
             encoderDrive(.05, -10, -10, 1.5);
             encoderDrive(.05, 10, 10, 1.5);
