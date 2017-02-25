@@ -185,34 +185,37 @@ public class AutonomousBase extends LinearOpMode {
     }
 
     public void pushButton(boolean red) {
-        // Adjust robot to get 30 units using the ultrasonic sensor
-
         boolean correctColor = false;
         do {
             buttonPusher(true);
-            encoderDrive(.05, -10, -10, 1.5);
-            encoderDrive(.05, 10, 10, 1.5);
+            encoderDrive(.2, -10, -10, 1.5);
+            encoderDrive(.2, 10, 10, 1.5);
             buttonPusher(false);
             // Get close enough to sense color
-            robot.leftMotor.setPower(-0.01);
-            robot.rightMotor.setPower(-0.01);
-            while (robot.rangeSensor.rawUltrasonic() > 10) {}
+            robot.leftMotor.setPower(-0.2);
+            robot.rightMotor.setPower(-0.2);
+            while (robot.colorSensor.red() < 3 && robot.colorSensor.blue() < 3
+                    && opModeIsActive()) {
+                telemetry.addData("Color Sensor","Moving Closer");
+                telemetry.addData("Red",robot.colorSensor.red());
+                telemetry.addData("Blue",robot.colorSensor.blue());
+                telemetry.update();
+            }
             robot.leftMotor.setPower(0.0);
             robot.rightMotor.setPower(0.0);
             // Sense color
             // Red
             if(red) {
-                if (robot.colorSensor.red() > robot.colorSensor.blue()) {
+                if (robot.colorSensor.red() > (robot.colorSensor.blue())) {
                     correctColor = true;
                 }
             } else {
-                if (robot.colorSensor.blue() > robot.colorSensor.red()) {
+                if (robot.colorSensor.blue() > (robot.colorSensor.red())) {
                     correctColor = true;
                 }
             }
+            encoderDrive(.2, 6, 6, 1.5);
         } while(!correctColor);
-        // Move back a bit
-        encoderDrive(.1, 5, 5, 1);
     }
 
     public void driveToLine() {

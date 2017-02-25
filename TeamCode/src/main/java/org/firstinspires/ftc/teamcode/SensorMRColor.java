@@ -76,7 +76,7 @@ public class SensorMRColor extends LinearOpMode {
     boolean bCurrState = false;
 
     // bLedOn represents the state of the LED.
-    boolean bLedOn = true;
+    boolean bLedOn = false;
 
     // get a reference to our ColorSensor object.
     colorSensor = hardwareMap.colorSensor.get("sensor_color");

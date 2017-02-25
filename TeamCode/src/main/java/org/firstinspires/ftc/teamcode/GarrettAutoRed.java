@@ -15,7 +15,7 @@ public class GarrettAutoRed extends AutonomousBase {
     @Override
     public void runOpMode() {
 
-        /*
+
         initializeAutonomous();
 
         encoderDrive(DRIVE_SPEED, -8, -8, 2);
@@ -36,7 +36,7 @@ public class GarrettAutoRed extends AutonomousBase {
         }
 
         encoderDrive(TURN_SPEED, -5.8, 5.8, 2.0);
-        */
+
         pushButton(true);
 
 
