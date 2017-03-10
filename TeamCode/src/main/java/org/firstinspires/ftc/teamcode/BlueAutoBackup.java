@@ -35,9 +35,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Autonomous(name="BLUE: regional", group="Compbot")
+@Autonomous(name="BLUE: regional backup", group="Regionals")
 
-public class BlueAuto extends AutonomousBase {
+public class BlueAutoBackup extends AutonomousBase {
 
     @Override
     public void runOpMode() {
@@ -47,8 +47,6 @@ public class BlueAuto extends AutonomousBase {
 
         encoderDrive(DRIVE_SPEED, 1, 1, 0.8);
 
-        launchBall();
-        nextBall();
         launchBall();
 
         encoderDrive(DRIVE_SPEED,20,20,0.6);

@@ -3,16 +3,15 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 /**
- * Created by Maint on 2/23/2017.
+ * Created by Maint on 2/25/2017.
  */
 
-@Autonomous(name="Garrett's Auto", group="Compbot")
+@Autonomous(name="BLUE: regional",group="Regionals")
 
-public class GarrettAutoRed extends AutonomousBase {
+public class MainAutoBlue extends AutonomousBase{
 
     @Override
     public void runOpMode() {
-
 
         initializeAutonomous();
 
@@ -21,8 +20,7 @@ public class GarrettAutoRed extends AutonomousBase {
         nextBall();
         launchBall();
 
-
-        encoderDrive(TURN_SPEED, -4.3, 4.3, 2.0);
+        encoderDrive(TURN_SPEED, 5.8, -5.8, 2.0);
 
         while(robot.odsSensor.getRawLightDetected() < 1 && opModeIsActive()) {
             robot.leftMotor.setPower(-0.4);
@@ -33,16 +31,8 @@ public class GarrettAutoRed extends AutonomousBase {
             telemetry.update();
         }
 
-        encoderDrive(TURN_SPEED, -5.8, 5.8, 2.0);
+        encoderDrive(TURN_SPEED, 4.3, -4.3, 2.0);
 
-        pushButton(true);
-
-
-
-
-
-
+        pushButton(false);
     }
 }
-
-

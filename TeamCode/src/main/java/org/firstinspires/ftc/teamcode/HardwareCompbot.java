@@ -19,6 +19,7 @@ public class HardwareCompbot {
     public DcMotor  intakeMotor     = null;
 
     public Servo    buttonPusher    = null;
+    public Servo    intakePusher    = null;
 
     public ModernRoboticsI2cRangeSensor rangeSensor = null;
     public ColorSensor                  colorSensor = null;
@@ -47,6 +48,7 @@ public class HardwareCompbot {
 
         // Define and Initialize Servos
         buttonPusher    = hwMap.servo.get("button_pusher");
+        intakePusher    = hwMap.servo.get("intake_pusher");
         
         // Define and Initialize Sensors
         colorSensor     = hwMap.colorSensor.get("sensor_color");

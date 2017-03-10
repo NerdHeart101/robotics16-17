@@ -42,10 +42,10 @@ public class AutonomousTester extends AutonomousBase {
     @Override
     public void runOpMode() {
 
-        buttonPusher(true);
-        buttonPusher(false);
+        initializeAutonomous();
 
-        pushButton(true);
+        launchBall();
+        launchBall();
 
     }
 }

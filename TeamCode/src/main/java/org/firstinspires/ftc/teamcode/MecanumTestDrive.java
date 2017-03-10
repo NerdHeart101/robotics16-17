@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Analog Stick Test", group="Compbot")
 
-public class CompbotMecanum extends OpMode {
+public class MecanumTestDrive extends OpMode {
 
     // Access the robot
     // HardwareCompbot robot = new HardwareCompbot();

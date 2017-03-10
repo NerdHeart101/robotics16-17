@@ -146,7 +146,7 @@ public class AutonomousBase extends LinearOpMode {
      */
     public void launchBall() {
 
-        double timeoutS = .75;
+        double timeoutS = .9;
 
         // Make sure opmode is still active
         if(opModeIsActive()) {
@@ -194,7 +194,7 @@ public class AutonomousBase extends LinearOpMode {
             // Get close enough to sense color
             robot.leftMotor.setPower(-0.2);
             robot.rightMotor.setPower(-0.2);
-            while (robot.colorSensor.red() < 3 && robot.colorSensor.blue() < 3
+            while (robot.colorSensor.red() < 2 && robot.colorSensor.blue() < 2
                     && opModeIsActive()) {
                 telemetry.addData("Color Sensor","Moving Closer");
                 telemetry.addData("Red",robot.colorSensor.red());
@@ -214,8 +214,8 @@ public class AutonomousBase extends LinearOpMode {
                     correctColor = true;
                 }
             }
-            encoderDrive(.2, 6, 6, 1.5);
-        } while(!correctColor);
+            //encoderDrive(.2, 6, 6, 1.5);
+        } while(!correctColor && opModeIsActive());
     }
 
     public void driveToLine() {
@@ -238,7 +238,7 @@ public class AutonomousBase extends LinearOpMode {
     // Wait for a specified number of seconds
     public void waitTime(int seconds) {
         runtime.reset();
-        while(runtime.seconds() < seconds) {
+        while(runtime.seconds() < seconds  && opModeIsActive()) {
             telemetry.addData("Timer","Waiting for %2d seconds",seconds);
             telemetry.update();
         }

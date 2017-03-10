@@ -64,8 +64,7 @@ public class CompbotTank_Comp extends OpMode{
 
     @Override
     public void loop() {
-        double left,right,intake,elevator,kicker,button;
-        boolean buttonDone = false;
+        double left,right,intake,elevator,kicker,button,intakeP;
 
         // Driver 1 - Driving, intake, and button pusher
 
@@ -76,14 +75,11 @@ public class CompbotTank_Comp extends OpMode{
         // Intake - A or right trigger for intake, B or right bumper for
         intake = !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER;
 
-        // Button Pusher - RT for up, RB for down
-        button = 0;
-        if(gamepad1.left_trigger > 0) {
-            button = 0.4;
-            buttonDone = true;
-        } else if(gamepad1.left_bumper || !buttonDone) {
-            button = 1.0;
-        }
+        // Button Pusher - LT
+        button = gamepad1.left_trigger > 0 ? 0.4 : 1.0;
+
+        // Intake Pusher - LB
+        intakeP = gamepad1.left_bumper ? 0.0 : 0.5;
 
         // Driver 2 - Elevator and kicker
 
@@ -102,6 +98,7 @@ public class CompbotTank_Comp extends OpMode{
         robot.elevatorMotor.setPower(elevator);
         robot.kickerMotor.setPower(kicker);
         robot.buttonPusher.setPosition(button);
+        robot.intakePusher.setPosition(intakeP);
 
         // Send telemetry message to signify robot running;
         telemetry.addData("left",     "%.2f", left);
