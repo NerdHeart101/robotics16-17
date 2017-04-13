@@ -41,13 +41,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Teleop Tank (Competition)", group="Compbot")
 
-public class CompbotTank_Comp extends OpMode{
+public class TeleOpMecanumComp extends OpMode{
 
     // Access the robot
     HardwareCompbot robot   = new HardwareCompbot();
 
     // Powers (speeds) for each motor
-    double DRIVE_POWER = .6;
+    double DRIVE_POWER = 1;
     double INTAKE_POWER = .2;
     double ELEVATOR_POWER = 1;
     double KICKER_POWER = 1;
@@ -64,22 +64,17 @@ public class CompbotTank_Comp extends OpMode{
 
     @Override
     public void loop() {
-        double left,right,intake,elevator,kicker,button,intakeP;
+        double speed,angle,rotate,intake,elevator,kicker;
 
-        // Driver 1 - Driving, intake, and button pusher
+        // Driver 1 - Driving, intake
 
-        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = -gamepad1.left_stick_y * DRIVE_POWER;
-        right = -gamepad1.right_stick_y * DRIVE_POWER;
+        // Run wheels in arcade mode
+        speed = Math.hypot(gamepad1.left_stick_x,gamepad1.left_stick_y);
+        angle = Math.atan2(gamepad1.left_stick_x,gamepad1.left_stick_y) + 180;
+        rotate = gamepad1.right_stick_x;
 
         // Intake - A or right trigger for intake, B or right bumper for
         intake = !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER;
-
-        // Button Pusher - LT
-        button = gamepad1.left_trigger > 0 ? 0.4 : 1.0;
-
-        // Intake Pusher - LB
-        intakeP = gamepad1.left_bumper ? 0.0 : 0.5;
 
         // Driver 2 - Elevator and kicker
 
@@ -92,17 +87,17 @@ public class CompbotTank_Comp extends OpMode{
                 : gamepad2.right_bumper ? -KICKER_POWER : 0.0;
 
         // Set power of all motors to the correct value
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.frontRight.setPower(DRIVE_POWER * speed * Math.sin(angle) + rotate);
+        robot.backRight.setPower(DRIVE_POWER * speed * Math.cos(angle) + rotate);
+        robot.frontLeft.setPower(DRIVE_POWER * speed * Math.cos(angle) - rotate);
+        robot.backLeft.setPower(DRIVE_POWER * speed * Math.sin(angle) - rotate);
         robot.intakeMotor.setPower(intake);
         robot.elevatorMotor.setPower(elevator);
         robot.kickerMotor.setPower(kicker);
-        robot.buttonPusher.setPosition(button);
-        robot.intakePusher.setPosition(intakeP);
 
         // Send telemetry message to signify robot running;
-        telemetry.addData("left",     "%.2f", left);
-        telemetry.addData("right",    "%.2f", right);
+        telemetry.addData("speed",    "%.2f", speed);
+        telemetry.addData("angle",    "%.2f", angle);
         telemetry.addData("intake",   "%.2f", intake);
         telemetry.addData("elevator", "%.2f", elevator);
         telemetry.addData("kicker",   "%.2f", kicker);

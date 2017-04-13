@@ -12,8 +12,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareCompbot {
 
     /* Public OpMode members. */
-    public DcMotor  leftMotor       = null;
-    public DcMotor  rightMotor      = null;
+    public DcMotor  frontRight      = null;
+    public DcMotor  backRight       = null;
+    public DcMotor  frontLeft       = null;
+    public DcMotor  backLeft        = null;
     public DcMotor  elevatorMotor   = null;
     public DcMotor  kickerMotor     = null;
     public DcMotor  intakeMotor     = null;
@@ -40,38 +42,43 @@ public class HardwareCompbot {
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftMotor       = hwMap.dcMotor.get("left_drive");
-        rightMotor      = hwMap.dcMotor.get("right_drive");
+        frontRight      = hwMap.dcMotor.get("front_right_drive");
+        backRight       = hwMap.dcMotor.get("back_right_drive");
+        frontLeft       = hwMap.dcMotor.get("front_left_drive");
+        backLeft        = hwMap.dcMotor.get("back_left_drive");
         elevatorMotor   = hwMap.dcMotor.get("elevator");
         kickerMotor     = hwMap.dcMotor.get("kicker");
         intakeMotor     = hwMap.dcMotor.get("intake");
 
         // Define and Initialize Servos
-        buttonPusher    = hwMap.servo.get("button_pusher");
-        intakePusher    = hwMap.servo.get("intake_pusher");
+        //buttonPusher    = hwMap.servo.get("button_pusher");
+        //intakePusher    = hwMap.servo.get("intake_pusher");
         
         // Define and Initialize Sensors
-        colorSensor     = hwMap.colorSensor.get("sensor_color");
-        odsSensor       = hwMap.opticalDistanceSensor.get("sensor_ods");
-        rangeSensor     = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
+        //colorSensor     = hwMap.colorSensor.get("sensor_color");
+        //odsSensor       = hwMap.opticalDistanceSensor.get("sensor_ods");
+        //rangeSensor     = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
 
-        leftMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backRight.setDirection(DcMotor.Direction.FORWARD);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
         elevatorMotor.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        // Set all motors to zero power
-        leftMotor.setPower(0);
-        rightMotor.setPower(0);
+        // Set all motors to zero
+        frontRight.setPower(0);
+        backRight.setPower(0);
+        frontLeft.setPower(0);
+        backLeft.setPower(0);
         elevatorMotor.setPower(0);
         kickerMotor.setPower(0);
         intakeMotor.setPower(0);
 
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         elevatorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
