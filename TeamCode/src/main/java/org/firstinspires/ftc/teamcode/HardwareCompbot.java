@@ -51,20 +51,20 @@ public class HardwareCompbot {
         intakeMotor     = hwMap.dcMotor.get("intake");
 
         // Define and Initialize Servos
-        //buttonPusher    = hwMap.servo.get("button_pusher");
-        //intakePusher    = hwMap.servo.get("intake_pusher");
+        buttonPusher    = hwMap.servo.get("button_pusher");
+        //capperPusher    = hwMap.servo.get("intake_pusher");
         
         // Define and Initialize Sensors
-        //colorSensor     = hwMap.colorSensor.get("sensor_color");
-        //odsSensor       = hwMap.opticalDistanceSensor.get("sensor_ods");
-        //rangeSensor     = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
+        colorSensor     = hwMap.colorSensor.get("sensor_color");
+        odsSensor       = hwMap.opticalDistanceSensor.get("sensor_ods");
+        rangeSensor     = hwMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
 
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         elevatorMotor.setDirection(DcMotor.Direction.REVERSE);
-        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero
         frontRight.setPower(0);

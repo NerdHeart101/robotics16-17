@@ -49,7 +49,7 @@ public class TeleOpMecanumTest extends OpMode{
     HardwareCompbot robot   = new HardwareCompbot();
 
     // Powers (speeds) for each motor
-    double DRIVE_POWER = .6;
+    double DRIVE_POWER = 1.0;
     double INTAKE_POWER = .2;
     double ELEVATOR_POWER = 1;
     double KICKER_POWER = 1;
@@ -126,7 +126,7 @@ public class TeleOpMecanumTest extends OpMode{
 
         // Send telemetry message to signify robot running;
         telemetry.addData("speed",    "%.2f", speed);
-        telemetry.addData("angle",    "%.2f", angle);
+        telemetry.addData("angle",    "%.2f", (angle+180)%360);
         telemetry.addData("intake",   "%.2f", intake);
         telemetry.addData("elevator", "%.2f", elevator);
         telemetry.addData("kicker",   "%.2f", kicker);
@@ -137,5 +137,12 @@ public class TeleOpMecanumTest extends OpMode{
      */
     @Override
     public void stop() {
+        robot.frontRight.setPower(0);
+        robot.backRight.setPower(0);
+        robot.frontLeft.setPower(0);
+        robot.backLeft.setPower(0);
+        robot.intakeMotor.setPower(0);
+        robot.elevatorMotor.setPower(0);
+        robot.kickerMotor.setPower(0);
     }
 }

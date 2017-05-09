@@ -34,6 +34,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Autonomous Test", group="Compbot")
 
@@ -43,9 +45,7 @@ public class AutonomousTester extends AutonomousBase {
     public void runOpMode() {
 
         initializeAutonomous();
-
+        encoderDrive(10,180);
         launchBall();
-        launchBall();
-
     }
 }
