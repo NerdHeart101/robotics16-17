@@ -37,9 +37,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="Autonomous Test", group="Compbot")
+@Autonomous(name="Auto Red: 2P, CNV", group="Compbot")
 
-public class AutonomousTester extends AutonomousBase {
+public class AutoRedCorner extends AutonomousBase {
 
     @Override
     public void runOpMode() {

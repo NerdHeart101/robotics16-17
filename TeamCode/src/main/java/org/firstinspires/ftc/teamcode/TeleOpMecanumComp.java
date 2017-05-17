@@ -47,10 +47,11 @@ public class TeleOpMecanumComp extends OpMode{
     HardwareCompbot robot   = new HardwareCompbot();
 
     // Powers (speeds) for each motor
-    double DRIVE_POWER = 1;
-    double INTAKE_POWER = .2;
-    double ELEVATOR_POWER = 1;
-    double KICKER_POWER = 1;
+    double DRIVE_POWER      = 1.0;
+    double INTAKE_POWER     = 0.2;
+    double ELEVATOR_POWER   = 1.0;
+    double KICKER_POWER     = 1.0;
+    double CAPPER_POWER     = 1.0;
 
     @Override
     public void init() {
@@ -64,19 +65,22 @@ public class TeleOpMecanumComp extends OpMode{
 
     @Override
     public void loop() {
-        double speed,angle,rotate,intake,elevator,kicker;
+        double speed,angle,rotate,intake,elevator,kicker,capper,buttonS,capperS;
 
-        // Driver 1 - Driving, intake
+        // Driver 1 - Driving, intake, button pusher
 
         // Run wheels in arcade mode
         speed = Math.hypot(gamepad1.left_stick_x,gamepad1.left_stick_y);
         angle = Math.atan2(gamepad1.left_stick_x,gamepad1.left_stick_y) + 180;
         rotate = gamepad1.right_stick_x;
 
-        // Intake - A or right trigger for intake, B or right bumper for
+        // Intake - RT for in, RB for out
         intake = !gamepad1.right_bumper ? gamepad1.right_trigger * INTAKE_POWER : -INTAKE_POWER;
 
-        // Driver 2 - Elevator and kicker
+        // Button Pusher - LT for out, LB for in
+        buttonS = gamepad1.left_trigger > 0 ? 1.0 : gamepad1.left_bumper ? 0.0 : robot.buttonPusher.getPosition();
+
+        // Driver 2 - Elevator, kicker, capper
 
         // Elevator - Left trigger for forward, left bumper for reverse
         elevator = (gamepad2.left_trigger != 0) ? (gamepad2.left_trigger * ELEVATOR_POWER)
@@ -86,6 +90,11 @@ public class TeleOpMecanumComp extends OpMode{
         kicker = gamepad2.right_trigger != 0 ? gamepad2.right_trigger * KICKER_POWER
                 : gamepad2.right_bumper ? -KICKER_POWER : 0.0;
 
+        // Capper - D-pad up and down for control, D-pad left or right for servo
+        capper = gamepad2.dpad_up ? CAPPER_POWER : gamepad2.dpad_down ? -CAPPER_POWER : 0.0;
+
+        capperS = gamepad2.dpad_left ? 0.5 : gamepad2.dpad_right ? 0.0 : robot.capperPusher.getPosition();
+
         // Set power of all motors to the correct value
         robot.frontRight.setPower(DRIVE_POWER * speed * Math.sin(angle) + rotate);
         robot.backRight.setPower(DRIVE_POWER * speed * Math.cos(angle) + rotate);
@@ -94,6 +103,11 @@ public class TeleOpMecanumComp extends OpMode{
         robot.intakeMotor.setPower(intake);
         robot.elevatorMotor.setPower(elevator);
         robot.kickerMotor.setPower(kicker);
+        robot.capperMotor.setPower(capper);
+
+        // Set position of both servos to the correct value
+        robot.buttonPusher.setPosition(buttonS);
+        robot.capperPusher.setPosition(capperS);
 
         // Send telemetry message to signify robot running;
         telemetry.addData("speed",    "%.2f", speed);

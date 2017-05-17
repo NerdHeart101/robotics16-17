@@ -19,9 +19,10 @@ public class HardwareCompbot {
     public DcMotor  elevatorMotor   = null;
     public DcMotor  kickerMotor     = null;
     public DcMotor  intakeMotor     = null;
+    public DcMotor  capperMotor     = null;
 
     public Servo    buttonPusher    = null;
-    public Servo    intakePusher    = null;
+    public Servo    capperPusher    = null;
 
     public ModernRoboticsI2cRangeSensor rangeSensor = null;
     public ColorSensor                  colorSensor = null;
@@ -49,10 +50,11 @@ public class HardwareCompbot {
         elevatorMotor   = hwMap.dcMotor.get("elevator");
         kickerMotor     = hwMap.dcMotor.get("kicker");
         intakeMotor     = hwMap.dcMotor.get("intake");
+        capperMotor     = hwMap.dcMotor.get("capper");
 
         // Define and Initialize Servos
         buttonPusher    = hwMap.servo.get("button_pusher");
-        //capperPusher    = hwMap.servo.get("intake_pusher");
+        capperPusher    = hwMap.servo.get("capper_pusher");
         
         // Define and Initialize Sensors
         colorSensor     = hwMap.colorSensor.get("sensor_color");
@@ -64,7 +66,9 @@ public class HardwareCompbot {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         elevatorMotor.setDirection(DcMotor.Direction.REVERSE);
+        kickerMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        capperMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero
         frontRight.setPower(0);
@@ -74,6 +78,9 @@ public class HardwareCompbot {
         elevatorMotor.setPower(0);
         kickerMotor.setPower(0);
         intakeMotor.setPower(0);
+        capperMotor.setPower(0);
+        buttonPusher.setPosition(0.0);
+        capperPusher.setPosition(0.0);
 
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -82,6 +89,7 @@ public class HardwareCompbot {
         elevatorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        capperMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /***
